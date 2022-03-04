@@ -13,6 +13,6 @@ class lineController extends Controller
     }
 
     public function lines(REQUEST $request){
-        return response()->json(['line'=>'lines'],200);
+        return response()->json(['mytle'=>'mytle'],200);
     }
 }

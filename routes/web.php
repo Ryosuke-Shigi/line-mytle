@@ -14,8 +14,8 @@
 Route::get('/','lineController@reMessage')->name('reMessage');
 Route::post('/','lineController@reMessage')->name('reMessage');
 
-Route::get('/mytle','lineController@lines')->name('lines');
-Route::post('/mytle','lineController@lines')->name('lines');
+Route::get('/mytle','lineController@mytles')->name('mytles');
+Route::post('/mytle','lineController@mytles')->name('mytles');
 
 Auth::routes();
 
