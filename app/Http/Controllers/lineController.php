@@ -53,18 +53,19 @@ class lineController extends Controller
         $inputs=json_decode(json_encode($request->all()),true);
 
         // そこからtypeをとりだし、$message_typeに代入
-        $message_type=$inputs['type'];
+        $message_type=$inputs['events'][0]['type'];
 
         // メッセージが送られた場合、$message_typeは'message'となる。その場合処理実行。
         if($message_type=='message') {
 
             // replyTokenを取得
-            $reply_token=$inputs['replyToken'];
+            $reply_token=$inputs['events'][0]['replyToken'];
 
             // LINEBOTSDKの設定
             $http_client = new CurlHTTPClient(config('services.line.accessToken'));
             $bot = new LINEBot($http_client, ['channelSecret' => config('services.line.channelSecret')]);
 
+            return $http_client;
             // 送信するメッセージの設定
             $reply_message='メッセージありがとうございます';
 
