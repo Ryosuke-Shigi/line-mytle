@@ -49,8 +49,8 @@ class lineController extends Controller
 
         // LINEBOTSDKの設定
         // LINEから送られた内容を$inputsに代入
-        $inputs=$request->all();
-
+        $inputs=json_decode($request,true);
+        return $inputs;
         // そこからtypeをとりだし、$message_typeに代入
         $message_type=$inputs['events'][0]['type'];
 
@@ -73,7 +73,8 @@ class lineController extends Controller
             return 'ok';
         }
 
-
+        //return config('services.line.accessToken');
+        //return config('services.line.channelSecret');
         //return response()->json(['mytle'=>'mytle'],200);
         //return response()->json($request->all());
     }
