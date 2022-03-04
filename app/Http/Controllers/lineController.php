@@ -9,6 +9,6 @@ class lineController extends Controller
 {
     //
     public function reMessage(REQUEST $request){
-        return Response::HTTP_OK;
+        return response()->json(['test'=>'testMessage'],200);
     }
 }
