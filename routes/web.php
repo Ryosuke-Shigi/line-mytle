@@ -12,7 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return true;
+    //return view('welcome');
+});
+Route::post('/',function(){
+    return true;
 });
 
 Auth::routes();
