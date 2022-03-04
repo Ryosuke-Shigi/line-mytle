@@ -24,6 +24,7 @@ standup:
 	docker-compose exec app apt install nodejs npm
 	docker-compose exec app npm install
 	docker-compose exec app npm run dev
+    docker-compose exec app composer update
 	docker-compose exec app php artisan key:generate
 	docker-compose exec app php artisan config:cache
 
