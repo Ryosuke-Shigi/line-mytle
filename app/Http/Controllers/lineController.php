@@ -51,7 +51,7 @@ class lineController extends Controller
         // LINEから送られた内容を$inputsに代入
         //return json_decode(json_encode($request->all()),true);
         $inputs=json_decode(json_encode($request->all()),true);
-
+        return $inputs['events'][0]['replyToken'];
         // そこからtypeをとりだし、$message_typeに代入
         $message_type=$inputs['events'][0]['type'];
 
