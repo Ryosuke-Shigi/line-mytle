@@ -47,6 +47,6 @@ class lineController extends Controller
             return 'ok';
         } */
         //return response()->json(['mytle'=>'mytle'],200);
-        return $request->all();
+        return response()->json($request->all());
     }
 }
