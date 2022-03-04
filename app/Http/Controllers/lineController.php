@@ -63,7 +63,7 @@ class lineController extends Controller
 
         $bot->replytext($reply_token,$inputs['events'][0]['message']['text']);
 
-        return $inputs['events'][0]['message']['text'];
+        return $inputs['events'][0]['message']['text']." なんだなっ！";
 
 
     }
