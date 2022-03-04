@@ -11,13 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return "アクセス成功";
-    //return view('welcome');
-});
-Route::post('/',function(){
-    return "アクセス成功";
-});
+Route::get('/','lineController@reMessage')->name('reMessage');
+Route::post('/','lineController@reMessage')->name('reMessage');
 
 Auth::routes();
 
