@@ -63,7 +63,7 @@ class lineController extends Controller
 
         $bot->replytext($reply_token,"こんにちわ！");
 
-        return $reply_token;
+        return 0;
 
 
     }
