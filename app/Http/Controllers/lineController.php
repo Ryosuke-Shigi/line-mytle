@@ -49,8 +49,9 @@ class lineController extends Controller
 
         // LINEBOTSDKの設定
         // LINEから送られた内容を$inputsに代入
-        $inputs=json_decode($request,true);
-        return $inputs;
+        return $request;
+        $inputs=$request->all();
+
         // そこからtypeをとりだし、$message_typeに代入
         $message_type=$inputs['events'][0]['type'];
 
