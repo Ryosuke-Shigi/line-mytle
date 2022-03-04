@@ -12,11 +12,11 @@
 */
 
 Route::get('/', function () {
-    return true;
+    return "アクセス成功";
     //return view('welcome');
 });
 Route::post('/',function(){
-    return true;
+    return "アクセス成功";
 });
 
 Auth::routes();
