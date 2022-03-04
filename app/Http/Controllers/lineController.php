@@ -12,7 +12,7 @@ class lineController extends Controller
         return response()->json(['test'=>'testMessage'],200);
     }
 
-    public function lines(REQUEST $request){
+    public function mytles(REQUEST $request){
         return response()->json(['mytle'=>'mytle'],200);
     }
 }
