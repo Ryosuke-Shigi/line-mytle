@@ -13,6 +13,7 @@ class lineController extends Controller
     }
 
     public function mytles(REQUEST $request){
+        dump($request);
         return response()->json(['mytle'=>'mytle'],200);
     }
 }
