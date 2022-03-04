@@ -22,7 +22,7 @@ class lineController extends Controller
     }
 
     public function mytles(REQUEST $request){
-        // LINEから送られた内容を$inputsに代入
+/*         // LINEから送られた内容を$inputsに代入
         $inputs=$request->all();
 
         // そこからtypeをとりだし、$message_typeに代入
@@ -45,7 +45,8 @@ class lineController extends Controller
             $reply=$bot->replyText($reply_token, $reply_message);
 
             return 'ok';
-        }
+        } */
         //return response()->json(['mytle'=>'mytle'],200);
+        return $request->all();
     }
 }
