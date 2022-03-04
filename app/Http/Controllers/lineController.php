@@ -61,7 +61,7 @@ class lineController extends Controller
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
 
-        $bot->replytext($reply_token,"こんにちわ！");
+        $bot->replytext($reply_token,"てけれっけのぱー　はっぱふみふみ");
 
         return 0;
 
