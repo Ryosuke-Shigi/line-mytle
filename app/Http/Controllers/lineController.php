@@ -50,11 +50,9 @@ class lineController extends Controller
 
         //メッセージ送信
         if($voice == ""){
-            $bot->replytext($reply_token,$voice.$inputs['events'][0]['message']['text']." なんだなっ！");
-            return $voice.$inputs['events'][0]['message']['text']." なんだなっ！";
+            $bot->replytext($reply_token,$inputs['events'][0]['message']['text']." なんだなっ！");
         }else{
             $bot->replytext($reply_token,$voice);
-            return $voice;
         }
 
         return 0;
