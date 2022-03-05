@@ -42,7 +42,7 @@ class lineController extends Controller
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
 
         foreach($words as $key=>$index){
-            if(strpos($inputs['events'][0]['message']['text'],$index)){
+            if(strpos($inputs['events'][0]['message']['text'],$index) !== false){
                 $voice=$voices[$key];
                 break;
             }
