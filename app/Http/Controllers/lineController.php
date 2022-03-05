@@ -58,7 +58,7 @@ class lineController extends Controller
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
         //メッセージ送信
         if($voice == ""){
-            $bot->replytext($reply_token,(string)$inputs);
+            $bot->replytext($reply_token,"なるほど");
             $bot->replytext($reply_token,$inputs['events'][0]['message']['text']." なんだなっ！");
         }else{
             $bot->replytext($reply_token,$voice);
