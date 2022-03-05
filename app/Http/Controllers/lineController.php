@@ -22,49 +22,40 @@ class lineController extends Controller
     }
 
     public function mytles(REQUEST $request){
+        //初期化
+        $words=array('猫','パンダ','犬');
+        $voices=array('にゃ～ん','笹食ってる場合じゃねぇ！','ワンワンイヌドッグ！');
+        $keyword="";
+        $voice="";
 
-        // LINEBOTSDKの設定
-        // LINEから送られた内容を$inputsに代入
-        //return json_decode(json_encode($request->all()),true);
-/*         $inputs=json_decode(json_encode($request->all()),true);
 
-        // そこからtypeをとりだし、$message_typeに代入
-        $message_type=$inputs['events'][0]['type'];
-
-        // メッセージが送られた場合、$message_typeは'message'となる。その場合処理実行。
-        if($message_type=='message') {
-
-            // replyTokenを取得
-            $reply_token=$inputs['events'][0]['replyToken'];
-
-            // LINEBOTSDKの設定
-            $http_client = new CurlHTTPClient(config('services.line.accessToken'));
-            $bot = new LINEBot($http_client, ['channelSecret' => config('services.line.channelSecret')]);
-
-            // 送信するメッセージの設定
-            $reply_message='メッセージありがとうございます';
-
-            // ユーザーにメッセージを返す
-            $reply=$bot->replyText($reply_token, $reply_message);
-
-            return 'ok';
-        }
- */
-
+        //トークン関係初期化
         $channel_secret = env('LINE_CHANNEL_SECRET');
         $access_token = env('LINE_ACCESS_TOKEN');
 
-        // replyTokenを取得
+        // メッセージからreplyTokenを取得
         $inputs=json_decode(json_encode($request->all()),true);
         $reply_token=$inputs['events'][0]['replyToken'];
 
+        //LINE-OBJECTを作成
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
 
-        $bot->replytext($reply_token,$inputs['events'][0]['message']['text']." なんだなっ！");
+        foreach($words as $key=>$index){
+            if(strpos($inputs['events'][0]['message']['text'],$index)){
+                $voice=$voices[$key];
+                break;
+            }
+        }
 
-        return $inputs['events'][0]['message']['text'];
+        //メッセージ送信
+        if($voice == ""){
+            $bot->replytext($reply_token,$voice);
+        }else{
+            $bot->replytext($reply_token,$voice.$inputs['events'][0]['message']['text']." なんだなっ！");
+        }
 
+        return 0;
 
     }
 
