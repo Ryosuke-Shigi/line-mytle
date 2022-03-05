@@ -23,8 +23,8 @@ class lineController extends Controller
 
     public function mytles(REQUEST $request){
         //初期化
-        $words=array('猫','パンダ','犬');
-        $voices=array('にゃ～ん','笹食ってる場合じゃねぇ！','ワンワンイヌドッグ！');
+        $words=array('猫','パンダ','犬','タスマニアデビル');
+        $voices=array('にゃ～ん','笹食ってる場合じゃねぇ！','ワンワンイヌドッグ！','たすまにぁーんよいとこー');
         $keyword="";
         $voice="";
 
@@ -41,6 +41,8 @@ class lineController extends Controller
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
 
+        //wordに含まれている言葉が含まれていれば　そのキーを使ってvoicesからvoiceへ入れる
+        //含まれてなければなにもいれない
         foreach($words as $key=>$index){
             if(strpos($inputs['events'][0]['message']['text'],$index) !== false){
                 $voice=$voices[$key];
@@ -56,7 +58,6 @@ class lineController extends Controller
         }
 
         return 0;
-
     }
 
 
