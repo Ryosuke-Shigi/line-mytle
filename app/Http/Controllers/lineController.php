@@ -37,9 +37,11 @@ class lineController extends Controller
         $inputs=json_decode(json_encode($request->all()),true);
         $reply_token=$inputs['events'][0]['replyToken'];
 
-        //LINE-OBJECTを作成
-        $client = new CurlHTTPClient($access_token);
-        $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
+        foreach($inputs['events'] as $line){
+
+
+        }
+
 
         //wordに含まれている言葉が含まれていれば　そのキーを使ってvoicesからvoiceへ入れる
         //含まれてなければなにもいれない
@@ -50,8 +52,13 @@ class lineController extends Controller
             }
         }
 
+
+        //LINE-OBJECTを作成
+        $client = new CurlHTTPClient($access_token);
+        $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
         //メッセージ送信
         if($voice == ""){
+            $bot->replytext($reply_token,$inputs);
             $bot->replytext($reply_token,$inputs['events'][0]['message']['text']." なんだなっ！");
         }else{
             $bot->replytext($reply_token,$voice);
