@@ -20,7 +20,7 @@ class lineController extends Controller
 
         $values=json_decode(json_encode($request->all()),true);
         event(new mytleRepeat($values));
-
+        event(new mytleRepeat($values));
         return 0;
     }
 
