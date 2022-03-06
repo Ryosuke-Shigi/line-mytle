@@ -13,6 +13,8 @@ use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
 use LINE\LINEBot\Event\MessageEvent;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 
+//events
+use App\Events\mytleRepeat;
 
 class lineController extends Controller
 {
@@ -22,7 +24,7 @@ class lineController extends Controller
     }
 
     public function mytles(REQUEST $request){
-        //初期化
+/*         //初期化
         $words=array('猫','パンダ','犬','タスマニアデビル');
         $voices=array('にゃ～ん','笹食ってる場合じゃねぇ！','ワンワンイヌドッグ！','たすまにぁーんよいとこー');
         $keyword="";
@@ -58,11 +60,15 @@ class lineController extends Controller
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
         //メッセージ送信
         if($voice == ""){
-            $bot->replytext($reply_token,$inputs['events'][0]['message']['text']."\n"." なんだなっ！");
+            $bot->replytext($reply_token,$inputs['events'][0]['message']['text']."\n"."なんだなっ！");
         }else{
             $bot->replytext($reply_token,$voice);
         }
+ */
 
+
+
+        event(new mytleRepeat($request));
         return 0;
     }
 
