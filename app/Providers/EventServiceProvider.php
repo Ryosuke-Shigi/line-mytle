@@ -7,6 +7,11 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+//イベントとリスナー
+use App\Events\mytleRepeat;
+use App\Listeners\talkRepeat;
+
+
 class EventServiceProvider extends ServiceProvider
 {
     /**

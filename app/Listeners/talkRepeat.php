@@ -6,6 +6,14 @@ use App\Events\mytleRepeat;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
+/* LINE関係 */
+use Illuminate\Support\Str;
+use LINE\LINEBot;
+use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
+use LINE\LINEBot\Event\MessageEvent;
+use LINE\LINEBot\Event\MessageEvent\TextMessage;
+
 class talkRepeat
 {
     /**
@@ -40,7 +48,7 @@ class talkRepeat
         $access_token = env('LINE_ACCESS_TOKEN');
 
         // メッセージからreplyTokenを取得
-        $inputs=json_decode(json_encode($event->request->all()),true);
+        $inputs=$event->request;
         $reply_token=$inputs['events'][0]['replyToken'];
 
 
@@ -52,7 +60,6 @@ class talkRepeat
                 break;
             }
         }
-
 
         //LINE-OBJECTを作成
         $client = new CurlHTTPClient($access_token);

@@ -10,14 +10,6 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-/* LINE関係 */
-use Illuminate\Support\Str;
-use LINE\LINEBot;
-use LINE\LINEBot\HTTPClient\CurlHTTPClient;
-use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
-use LINE\LINEBot\Event\MessageEvent;
-use LINE\LINEBot\Event\MessageEvent\TextMessage;
-
 
 class mytleRepeat
 {
