@@ -40,6 +40,7 @@ class talkRepeat
      */
     public function handle(mytleRepeat $event)
     {
+        //$event    //eventsの変数を扱える
         //変数初期化
         $voice="";
 

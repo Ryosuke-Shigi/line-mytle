@@ -67,8 +67,8 @@ class lineController extends Controller
  */
 
 
-        $inputs=json_decode(json_encode($request->all()),true);
-        event(new mytleRepeat($inputs));
+        $values=json_decode(json_encode($request->all()),true);
+        event(new mytleRepeat($values));
 
         return 0;
     }
