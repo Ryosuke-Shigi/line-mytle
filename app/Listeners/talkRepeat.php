@@ -28,8 +28,8 @@ class talkRepeat
     public function __construct()
     {
         //
-        $this->words=array('猫','パンダ','犬','タスマニアデビル');
-        $this->voices=array('にゃ～ん','笹食ってる場合じゃねぇ！','ワンワンイヌドッグ！','たすまにぁーんよいとこー');
+        $this->words=array('猫','パンダ','犬','タスマニアデビル','(emoji)');
+        $this->voices=array('にゃ～ん','笹食ってる場合じゃねぇ！','ワンワンイヌドッグ！','たすまにぁーんよいとこー','YOU ARE CHICKEN HEART！');
     }
 
     /**
