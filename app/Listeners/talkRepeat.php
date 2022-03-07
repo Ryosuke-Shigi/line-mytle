@@ -80,8 +80,11 @@ class talkRepeat
                         $bot->replytext($reply_token,$voice);
                     }
                     break;
+                case 'sticker':
+                    $bot->replytext($reply_token,'泣いても…許してくれなかったんだなっ…！');
+                    break;
                 case 'follow':
-                    $bot->replytext($reply_token,$event['source']['type']." よろしくなんだなっ！");
+                    $bot->replytext($reply_token,$event['source']['type']." さん！よろしくなんだなっ！");
                     break;
                 default:
                     break;
