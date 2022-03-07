@@ -50,7 +50,6 @@ class talkRepeat
 
         // メッセージからreplyTokenを取得
         $inputs=$event->request;
-        $reply_token=$inputs['events'][0]['replyToken'];
 
 
         //wordに含まれている言葉が含まれていれば　そのキーを使ってvoicesからvoiceへ入れる
@@ -65,17 +64,24 @@ class talkRepeat
         //LINE-OBJECTを作成
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
-        dump($inputs['events']);
         foreach($inputs['events'] as $event){
-            dump($event);
+            //token取得（存在していないアクションもあるのでisset）
+            if(isset($event['replyToken'])){
+                $reply_token=$event['replyToken'];
+            }
             switch($event['type']){
                 case 'message':
                     //メッセージ送信
                     if($voice == ""){
+                        //オウム返し
                         $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
                     }else{
+                        //動物
                         $bot->replytext($reply_token,$voice);
                     }
+                    break;
+                case 'follow':
+                    $bot->replytext($reply_token,$event['source']['type']." よろしくなんだなっ！");
                     break;
                 default:
                     break;
