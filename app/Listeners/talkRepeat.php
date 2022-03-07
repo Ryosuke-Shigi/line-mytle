@@ -72,7 +72,7 @@ class talkRepeat
             switch($event['type']){
                 case 'message':
                     //メッセージかスタンプかの判断
-                    if($event['message']['type']=='text'){
+                    if($event['message']['type']==='text'){
                         //メッセージ送信
                         if($voice == ""){
                             //オウム返し
@@ -82,7 +82,7 @@ class talkRepeat
                             $bot->replytext($reply_token,$voice);
                         }
                     }else{
-                        $bot->replytext($reply_token,"泣いても…許してくれなかったんだな…！");
+                        $bot->replytext($reply_token,"こ、こんなの困るんだなっ…！");
                     }
                     break;
 
