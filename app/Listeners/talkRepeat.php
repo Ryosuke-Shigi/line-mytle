@@ -66,12 +66,27 @@ class talkRepeat
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
 
-        //メッセージ送信
+        foreach($event as $inputs['events']){
+            switch($event['type']){
+                case 'message':
+                    //メッセージ送信
+                    if($voice == ""){
+                        $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
+                    }else{
+                        $bot->replytext($reply_token,$voice);
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+        }
+/*         //メッセージ送信
         if($voice == ""){
             $bot->replytext($reply_token,$inputs['events'][0]['message']['text']."\n"."なんだなっ！");
         }else{
             $bot->replytext($reply_token,$voice);
-        }
+        } */
 
         return 0;
     }
