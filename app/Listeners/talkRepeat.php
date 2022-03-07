@@ -81,7 +81,7 @@ class talkRepeat
                                 $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
                             }else{
                                 //動物
-                                $bot->replytext($reply_token,$voice."なんだなっ！");
+                                $bot->replytext($reply_token,$voice." なんだなっ！");
                             }
                             break;
                         case 'sticker':
@@ -94,7 +94,7 @@ class talkRepeat
                             $bot->replytext($reply_token,"これは むーびー なんだなっ！");
                             break;
                         case 'audio':
-                            $bot->replytext($reply_token,"何か変な声が聞こえるんだなっ！");
+                            $bot->replytext($reply_token,"何か聞こえるんだなっ！");
                             break;
                         default:
                             break;
