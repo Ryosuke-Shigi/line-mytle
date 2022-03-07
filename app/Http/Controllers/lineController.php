@@ -18,7 +18,7 @@ class lineController extends Controller
 
     public function mytles(REQUEST $request){
 
-        $values=$request->getContent();
+        $values=json_decode(json_encode($request->all()),true);
         event(new mytleRepeat($values));
         return 0;
     }
