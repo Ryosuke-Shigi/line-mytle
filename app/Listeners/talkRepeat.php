@@ -97,6 +97,7 @@ class talkRepeat
                             $bot->replytext($reply_token,"何か聞こえるんだなっ！");
                             break;
                         default:
+                            $bot->replytext($reply_token,"イミフなんだなっ！");
                             break;
                     }
                     break;
