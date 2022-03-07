@@ -65,6 +65,7 @@ class talkRepeat
         //LINE-OBJECTを作成
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
+
         //メッセージ送信
         if($voice == ""){
             $bot->replytext($reply_token,$inputs['events'][0]['message']['text']."\n"."なんだなっ！");
