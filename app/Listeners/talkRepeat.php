@@ -71,18 +71,21 @@ class talkRepeat
             }
             switch($event['type']){
                 case 'message':
-                    //メッセージ送信
-                    if($voice == ""){
-                        //オウム返し
-                        $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
+                    //メッセージかスタンプかの判断
+                    if($event['message']['type']=='text'){
+                        //メッセージ送信
+                        if($voice == ""){
+                            //オウム返し
+                            $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
+                        }else{
+                            //動物
+                            $bot->replytext($reply_token,$voice);
+                        }
                     }else{
-                        //動物
-                        $bot->replytext($reply_token,$voice);
+                        $bot->replytext($reply_token,"泣いても…許してくれなかったんだな…！");
                     }
                     break;
-                case 'sticker':
-                    $bot->replytext($reply_token,'泣いても…許してくれなかったんだなっ…！');
-                    break;
+
                 case 'follow':
                     $bot->replytext($reply_token,$event['source']['type']." さん！よろしくなんだなっ！");
                     break;
