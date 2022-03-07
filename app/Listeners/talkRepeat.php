@@ -90,6 +90,7 @@ class talkRepeat
                     $bot->replytext($reply_token,$event['source']['type']." さん！よろしくなんだなっ！");
                     break;
                 default:
+                $bot->replytext($reply_token,"こ、こんなの困るんだなっ…！");
                     break;
 
             }
