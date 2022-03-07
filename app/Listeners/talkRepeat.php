@@ -65,8 +65,9 @@ class talkRepeat
         //LINE-OBJECTを作成
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
-
-        foreach($event as $inputs['events']){
+        dump($inputs['events']);
+        foreach($inputs['events'] as $event){
+            dump($event);
             switch($event['type']){
                 case 'message':
                     //メッセージ送信
