@@ -78,16 +78,16 @@ class talkRepeat
 
                         //以下、テキスト以外
                         case 'sticker':
-                            $bot->replytext($reply_token,"知ってるんだな！\nこれはスタンプなんだな！");
+                            $bot->replytext($reply_token,"知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を２度、なにもない焦土にかえたこわいやつなんだなっ！！");
                             break;
                         case 'image':
-                            $bot->replytext($reply_token,"『魂を抜き取られるがいい』");
+                            $bot->replytext($reply_token,"知ってるんだなっ！\nこれは写真なんだなっ！\nかつて和歌山を３度、氷の世界に変えたこわいやつなんだなっ！！");
                             break;
                         case 'video':
-                            $bot->replytext($reply_token,"これは むーびー なんだなっ！");
+                            $bot->replytext($reply_token,"知ってるんだなっ！\nこれはむーびーなんだなっ！\nかつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！");
                             break;
                         case 'audio':
-                            $bot->replytext($reply_token,"何か聞こえるんだなっ！");
+                            $bot->replytext($reply_token,"知ってるんだなっ！\nこれはみゅーじっくなんだなっ！\nかつて和歌山を４度、海の底にしずめたこわいやつなんだなっ！！");
                             break;
                         default:
                             $bot->replytext($reply_token,"ソレハヒミツナノデス");
