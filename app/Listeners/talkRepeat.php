@@ -17,8 +17,7 @@ use LINE\LINEBot\Event\MessageEvent\TextMessage;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\reComment;
-
-
+use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 
 class talkRepeat
 {
@@ -80,7 +79,10 @@ class talkRepeat
                         //以下、テキスト以外
                         case 'sticker':
                             //$bot->replytext($reply_token,"知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を２度、なにもない焦土にかえたこわいやつなんだなっ！！");
-                            $bot->replyMessage($reply_token,new textMessageBuilder("知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
+                            $sendMessage = new MultiMessageBuilder();
+                            $text = new TextMessageBuilder("知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！");
+                            $sendMessage->add($text);
+                            $bot->replyMessage($reply_token,$sendMessage);
                             break;
                         case 'image':
                             $bot->replytext($reply_token,"知ってるんだなっ！\nこれは写真なんだなっ！\nかつて和歌山を３度、氷の世界に変えたこわいやつなんだなっ！！");
