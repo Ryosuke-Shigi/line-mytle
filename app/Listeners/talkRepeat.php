@@ -53,11 +53,7 @@ class talkRepeat
         $channel_secret = env('LINE_CHANNEL_SECRET');
         $access_token = env('LINE_ACCESS_TOKEN');
 
-        // メッセージからreplyTokenを取得
         $inputs=$event->request;
-
-
-
 
         //LINE-OBJECTを作成
         $client = new CurlHTTPClient($access_token);
@@ -78,10 +74,11 @@ class talkRepeat
                                     $this->repeat($bot,$reply_token,$event['message']['text']);
                                     break;
                             }
-
                             break;
+
+                        //以下、テキスト以外
                         case 'sticker':
-                            $bot->replytext($reply_token,"こ、こんなの知らないんだなっ…！");
+                            $bot->replytext($reply_token,"知ってるんだな！\nこれはスタンプなんだな！");
                             break;
                         case 'image':
                             $bot->replytext($reply_token,"『魂を抜き取られるがいい』");
