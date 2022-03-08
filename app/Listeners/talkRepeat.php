@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
+use LINE\LINEBot\MessageBuilder\textMessageBuilder;
 use LINE\LINEBot\Event\MessageEvent;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 
@@ -79,7 +80,7 @@ class talkRepeat
                         //以下、テキスト以外
                         case 'sticker':
                             //$bot->replytext($reply_token,"知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を２度、なにもない焦土にかえたこわいやつなんだなっ！！");
-                            $bot->replyMessage($reply_token,new \LINE\LINEBot\MessageBuilder\TextMessageBuilder(("知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！")));
+                            $bot->replyMessage($reply_token,new textMessageBuilder(("知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！")));
                             break;
                         case 'image':
                             $bot->replytext($reply_token,"知ってるんだなっ！\nこれは写真なんだなっ！\nかつて和歌山を３度、氷の世界に変えたこわいやつなんだなっ！！");
