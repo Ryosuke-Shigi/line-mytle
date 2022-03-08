@@ -76,12 +76,11 @@ class talkRepeat
                             $comment="";
                             $keywords = DB::table('re_comments')->get();
                             foreach($keywords as $keyword){
-                                if(strpos($event['message']['text'],$keyword->keyword)){
+                                if(strpos($event['message']['text'],$keyword->keyword)!==false){
                                     $comment=$keyword->comment;
                                     break;
                                 }
                             }
-
                             if($comment==""){
                                 $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
                             }else{
