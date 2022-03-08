@@ -108,20 +108,22 @@ class talkRepeat
 
     //オウム返し＋α
     private function repeat($bot,$reply_token,$message){
+        //変数初期化
         $comment="";
+        //テーブル：オウム返しのキーワード等を取得
         $keywords = DB::table('re_comments')->get();
+        //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
         foreach($keywords as $keyword){
+            //あればコメントを返す準備をする
             if(strpos($message,$keyword->keyword)!==false){
-                $comment=$keyword->comment;
-                break;
+                $bot->replytext($reply_token,$keyword->comment);
+                return "keyword";
             }
         }
-        if($comment==""){
-            $bot->replytext($reply_token,$message."\n"."なんだなっ！");
-        }else{
-            $bot->replytext($reply_token,$comment);
-        }
-        return $comment;
+
+        $bot->replytext($reply_token,$message."\n"."なんだなっ！");
+
+        return "repeat";
     }
 
 
