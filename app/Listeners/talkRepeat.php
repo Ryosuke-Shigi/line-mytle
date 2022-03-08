@@ -73,19 +73,27 @@ class talkRepeat
                     //メッセージかスタンプかの判断
                     switch($event['message']['type']){
                         case 'text':
-                            $comment="";
-                            $keywords = DB::table('re_comments')->get();
-                            foreach($keywords as $keyword){
-                                if(strpos($event['message']['text'],$keyword->keyword)!==false){
-                                    $comment=$keyword->comment;
+                            switch($event['message']['text']){
+                                default:
+/*                                     $comment="";
+                                    $keywords = DB::table('re_comments')->get();
+                                    foreach($keywords as $keyword){
+                                        if(strpos($event['message']['text'],$keyword->keyword)!==false){
+                                            $comment=$keyword->comment;
+                                            break;
+                                        }
+                                    }
+                                    if($comment==""){
+                                        $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
+                                    }else{
+                                        $bot->replytext($reply_token,$comment);
+                                    }
+                                    return $comment;
+ */
+                                    $this->repeat($bot,$reply_token,$event['message']['text']);
                                     break;
-                                }
                             }
-                            if($comment==""){
-                                $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
-                            }else{
-                                $bot->replytext($reply_token,$comment);
-                            }
+
                             break;
                         case 'sticker':
                             $bot->replytext($reply_token,"こ、こんなの知らないんだなっ…！");
@@ -100,7 +108,7 @@ class talkRepeat
                             $bot->replytext($reply_token,"何か聞こえるんだなっ！");
                             break;
                         default:
-                            $bot->replytext($reply_token,"イミフなんだなっ！");
+                            $bot->replytext($reply_token,"ソレハヒミツナノデス");
                             break;
                     }
                     break;
@@ -113,14 +121,24 @@ class talkRepeat
 
             }
         }
-/*         //メッセージ送信
-        if($voice == ""){
-            $bot->replytext($reply_token,$inputs['events'][0]['message']['text']."\n"."なんだなっ！");
-        }else{
-            $bot->replytext($reply_token,$voice);
-        } */
-
         return 0;
+    }
+
+    private function repeat($bot,$reply_token,$message){
+        $comment="";
+        $keywords = DB::table('re_comments')->get();
+        foreach($keywords as $keyword){
+            if(strpos($message,$keyword->keyword)!==false){
+                $comment=$keyword->comment;
+                break;
+            }
+        }
+        if($comment==""){
+            $bot->replytext($reply_token,$message."\n"."なんだなっ！");
+        }else{
+            $bot->replytext($reply_token,$comment);
+        }
+        return $comment;
     }
 
 
