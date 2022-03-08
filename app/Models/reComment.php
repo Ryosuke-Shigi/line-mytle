@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class reComment extends Model
 {
     //
-    protected $table="reComment";
+    protected $table="re_comments";
 }

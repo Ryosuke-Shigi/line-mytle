@@ -14,6 +14,11 @@ use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
 use LINE\LINEBot\Event\MessageEvent;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 
+use Illuminate\Support\Facades\DB;
+use App\Models\reComment;
+
+
+
 class talkRepeat
 {
     /**
@@ -69,19 +74,28 @@ class talkRepeat
                         case 'text':
                             //wordに含まれている言葉が含まれていれば　そのキーを使ってvoicesからvoiceへ入れる
                             //含まれてなければなにもいれない
-                            foreach($this->words as $key=>$index){
+/*                             foreach($this->words as $key=>$index){
                                 if(strpos($inputs['events'][0]['message']['text'],$index) !== false){
                                     $voice=$this->voices[$key];
                                     break;
                                 }
-                            }
+                            } */
+
                             //メッセージ送信
-                            if($voice == ""){
+/*                             if($voice == ""){
                                 //オウム返し
                                 $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
                             }else{
                                 //動物
                                 $bot->replytext($reply_token,$voice);
+                            } */
+                            $table = DB::table('re_comments')
+                                    ->where('keyword','LIKE','%'.$event['message']['text'].'%')
+                                    ->first();
+                            if($table == null){
+                                $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
+                            }else{
+                                $bot->replytext($reply_token,$table->comment);
                             }
                             break;
                         case 'sticker':
