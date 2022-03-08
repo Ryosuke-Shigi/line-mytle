@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
-use LINE\LINEBot\MessageBuilder\textMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\Event\MessageEvent;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 
