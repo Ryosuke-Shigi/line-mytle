@@ -78,7 +78,7 @@ class talkRepeat
 
                         //以下、テキスト以外
                         case 'sticker':
-                            $bot->replytext($reply_token,"知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を２度、なにもない焦土にかえたこわいやつなんだなっ！！");
+                            $bot->replytext($reply_token,["知ってるんだなっ！","これはスタンプなんだなっ！","かつて和歌山を２度、なにもない焦土にかえたこわいやつなんだなっ！！"]);
                             break;
                         case 'image':
                             $bot->replytext($reply_token,"知ってるんだなっ！\nこれは写真なんだなっ！\nかつて和歌山を３度、氷の世界に変えたこわいやつなんだなっ！！");
