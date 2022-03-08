@@ -83,6 +83,8 @@ class talkRepeat
                             $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
+                            $sendMessage->add(new TextMessageBuilder($event['source']['type']." ".$event['source']['userId']));
+                            $sendMessage->add(new TextMessageBuilder("僕は逃げるんだなっ！"));
                             $bot->replyMessage($reply_token,$sendMessage);
                             break;
                         case 'image':
