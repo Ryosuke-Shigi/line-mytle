@@ -80,10 +80,9 @@ class talkRepeat
                         case 'sticker':
                             //$bot->replytext($reply_token,"知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を２度、なにもない焦土にかえたこわいやつなんだなっ！！");
                             $sendMessage = new MultiMessageBuilder();
-                            $text = new TextMessageBuilder("知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！");
-                            $sendMessage->add($text);
-                            $sendMessage->add($text);
-
+                            $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
                             $bot->replyMessage($reply_token,$sendMessage);
                             break;
                         case 'image':
