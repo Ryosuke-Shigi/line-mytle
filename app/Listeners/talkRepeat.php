@@ -82,7 +82,9 @@ class talkRepeat
                             $sendMessage = new MultiMessageBuilder();
                             $text = new TextMessageBuilder("知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！");
                             $sendMessage->add($text);
-                            $bot->replyMessage($reply_token,$text);
+                            $sendMessage->add($text);
+
+                            $bot->replyMessage($reply_token,$sendMessage);
                             break;
                         case 'image':
                             $bot->replytext($reply_token,"知ってるんだなっ！\nこれは写真なんだなっ！\nかつて和歌山を３度、氷の世界に変えたこわいやつなんだなっ！！");
