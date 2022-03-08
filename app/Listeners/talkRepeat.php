@@ -90,7 +90,7 @@ class talkRepeat
                             $bot->replytext($reply_token,"知ってるんだなっ！\nこれはみゅーじっくなんだなっ！\nかつて和歌山を４度、海の底にしずめたこわいやつなんだなっ！！");
                             break;
                         default:
-                            $bot->replytext($reply_token,"ソレハヒミツナノデス");
+                            $bot->replytext($reply_token,"メタメタに…メタメタにやられたんだなっ…！\n泣いても…許してくれなかったんだなっ…！");
                             break;
                     }
                     break;
