@@ -75,21 +75,6 @@ class talkRepeat
                         case 'text':
                             switch($event['message']['text']){
                                 default:
-/*                                     $comment="";
-                                    $keywords = DB::table('re_comments')->get();
-                                    foreach($keywords as $keyword){
-                                        if(strpos($event['message']['text'],$keyword->keyword)!==false){
-                                            $comment=$keyword->comment;
-                                            break;
-                                        }
-                                    }
-                                    if($comment==""){
-                                        $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
-                                    }else{
-                                        $bot->replytext($reply_token,$comment);
-                                    }
-                                    return $comment;
- */
                                     $this->repeat($bot,$reply_token,$event['message']['text']);
                                     break;
                             }
@@ -124,6 +109,7 @@ class talkRepeat
         return 0;
     }
 
+    //オウム返し＋α
     private function repeat($bot,$reply_token,$message){
         $comment="";
         $keywords = DB::table('re_comments')->get();
