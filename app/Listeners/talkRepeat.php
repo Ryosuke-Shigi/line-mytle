@@ -62,6 +62,7 @@ class talkRepeat
         //LINE-OBJECTを作成
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
+
         foreach($inputs['events'] as $event){
             //token取得（存在していないアクションもあるのでisset）
             if(isset($event['replyToken'])){
@@ -72,30 +73,19 @@ class talkRepeat
                     //メッセージかスタンプかの判断
                     switch($event['message']['type']){
                         case 'text':
-                            //wordに含まれている言葉が含まれていれば　そのキーを使ってvoicesからvoiceへ入れる
-                            //含まれてなければなにもいれない
-/*                             foreach($this->words as $key=>$index){
-                                if(strpos($inputs['events'][0]['message']['text'],$index) !== false){
-                                    $voice=$this->voices[$key];
+                            $comment="";
+                            $keywords = DB::table('re_comments')->get();
+                            foreach($keywords as $keyword){
+                                if(strpos($event['message']['text'],$keyword->keyword)){
+                                    $comment=$keyword->comment;
                                     break;
                                 }
-                            } */
+                            }
 
-                            //メッセージ送信
-/*                             if($voice == ""){
-                                //オウム返し
+                            if($comment==""){
                                 $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
                             }else{
-                                //動物
-                                $bot->replytext($reply_token,$voice);
-                            } */
-                            $table = DB::table('re_comments')
-                                    ->where('keyword','LIKE','%'.$event['message']['text'].'%')
-                                    ->first();
-                            if($table == null){
-                                $bot->replytext($reply_token,$event['message']['text']."\n"."なんだなっ！");
-                            }else{
-                                $bot->replytext($reply_token,$table->comment);
+                                $bot->replytext($reply_token,$comment);
                             }
                             break;
                         case 'sticker':
