@@ -128,10 +128,10 @@ class talkRepeat
         $comment="";
         $sendMessage = new MultiMessageBuilder();
         switch($message){
-            case "__blackboxA":
+            case "_大きいつづら_":
                 return "君のように勘のいい子供は嫌いだよ";
                 break;
-            case "__blackboxB":
+            case "_小さいつづら_":
                 return "ただし魔法は尻から出る";
                 break;
             default:
@@ -161,16 +161,16 @@ class talkRepeat
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => '__blackboxA',
-                          'text' => '小さいつづら'
+                          'label' => '_小さいつづら_',
+                          'text' => '_小さいつづら_'
                         ]
                   ],
                   [
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => '__blackboxB',
-                          'text' => '大きいつづら'
+                          'label' => '_大きいつづら_',
+                          'text' => '_大きいつづら_'
                         ]
                   ],
                 ]
