@@ -161,16 +161,16 @@ class talkRepeat
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => '小さいつづら',
-                          'text' => '__blackboxA'
+                          'label' => '__blackboxA',
+                          'text' => '小さいつづら'
                         ]
                   ],
                   [
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => '大きいつづら',
-                          'text' => '__blackboxB'
+                          'label' => '__blackboxB',
+                          'text' => '大きいつづら'
                         ]
                   ],
                 ]
