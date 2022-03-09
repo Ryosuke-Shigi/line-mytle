@@ -66,7 +66,7 @@ class talkRepeat
                         case 'text':
                             switch($event['message']['text']){
                                 default:
-                                    $this->repeat($values->bot,$reply_token,$event['message']['text']);
+                                    $sendMessage->add(new TextMessageBuilder($this->repeat($event['message']['text'])));
                                     break;
                             }
                             break;
@@ -77,7 +77,6 @@ class talkRepeat
                             $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-                            $sendMessage->add(new TextMessageBuilder("僕は逃げるんだなっ！"));
                             break;
                         //画像
                         case 'image':
@@ -114,6 +113,7 @@ class talkRepeat
             }
         }
 
+        //返答送信
         $values->bot->replyMessage($reply_token,$sendMessage);
 
         return 0;
@@ -121,23 +121,22 @@ class talkRepeat
 
     //オウム返し＋α
     //ここでもうメッセージ処理も行っている
-    private function repeat($bot,$reply_token,$message){
+    private function repeat($message){
         //変数初期化
         $comment="";
+        $sendMessage = new MultiMessageBuilder();
+
         //テーブル：オウム返しのキーワード等を取得
         $keywords = DB::table('re_comments')->get();
         //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
         foreach($keywords as $keyword){
             //あればコメントを返す準備をする
             if(strpos($message,$keyword->keyword)!==false){
-                $bot->replytext($reply_token,$keyword->comment);
-                return "keyword";
+                return $keyword->comment;
             }
         }
 
-        $bot->replytext($reply_token,$message."\n"."なんだなっ！");
-
-        return "repeat";
+        return $message."\n"."なんだなっ！";
     }
 
 
