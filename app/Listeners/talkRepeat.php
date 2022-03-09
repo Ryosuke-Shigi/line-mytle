@@ -117,7 +117,8 @@ class talkRepeat
         //返答送信
         $askAgeBuilder = new RawMessageBuilder($this->quickReplyDataA());
         dump($askAgeBuilder);
-        $values->bot->replyMessage($reply_token,$sendMessage,$askAgeBuilder);
+        $values->bot->replyMessage($reply_token,$askAgeBuilder);
+        $values->bot->replyMessage($reply_token,$sendMessage);
 
         return 0;
     }
