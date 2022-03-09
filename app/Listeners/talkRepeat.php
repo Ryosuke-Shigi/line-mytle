@@ -23,7 +23,7 @@ use LINE\LINEBot\QuickReplyBuilder\QuickReplyMessageBuilder;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\reComment;
-
+use LINE\LINEBot\MessageBuilder\RawMessageBuilder;
 
 class talkRepeat
 {
@@ -115,7 +115,8 @@ class talkRepeat
 
 
         //返答送信
-        $values->bot->replyMessage($reply_token,$sendMessage,json_encode($this->quickReplyDataA()));
+        $askAgeBuilder = new RawMessageBuilder($this->quickReplyDataA());
+        $values->bot->replyMessage($reply_token,$sendMessage,$askAgeBuilder);
 
         return 0;
     }
