@@ -67,7 +67,6 @@ class talkRepeat
                             switch($event['message']['text']){
                                 default:
                                     $sendMessage->add(new TextMessageBuilder($this->repeat($event['message']['text'])));
-                                    $sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
                                     break;
                             }
                             break;
@@ -78,6 +77,8 @@ class talkRepeat
                             $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
+                            $sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
+
                             break;
                         //画像
                         case 'image':
