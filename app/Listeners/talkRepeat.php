@@ -66,7 +66,6 @@ class talkRepeat
                         case 'text':
                             switch($event['message']['text']){
                                 default:
-                                dump($event);
                                     $this->repeat($values->bot,$reply_token,$event['message']['text']);
                                     break;
                             }
@@ -80,7 +79,7 @@ class talkRepeat
                             $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
                             //$sendMessage->add(new TextMessageBuilder($event['source']['userId']));//ID確認 これは固有っぽ
-                            ///$sendMessage->add(new TextMessageBuilder("僕は逃げるんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder($this->quickReplyDataA()));
                             $values->bot->replyMessage($reply_token,$sendMessage);
                             break;
                         case 'image':
@@ -127,6 +126,30 @@ class talkRepeat
         $bot->replytext($reply_token,$message."\n"."なんだなっ！");
 
         return "repeat";
+    }
+
+    private function quickReplyDataA(){
+        $values=array('quickReply' => array(
+                        'items' => array(
+                            array('type' => 'action',
+                                    'action' => array(
+                                    'type' => 'postback',
+                                    'label' => 'Data Send',
+                                    'data' => 'PostBackData',
+                                    'displayText' => 'ポストバックデータを送ります。',
+                                )
+                            ),
+                            array('type' => 'action',
+                                    'action' => array(
+                                    'type' => 'message',
+                                    'label' => 'Message Send',
+                                    'text' => 'テキストを送信します。',
+                                )
+                            )
+                        )
+                    )
+                );
+
     }
 
 

@@ -30,10 +30,12 @@ class lineController extends Controller
         $client = new CurlHTTPClient($access_token);
         $bot = new LINEBot($client, ['channelSecret' => $channel_secret]);
 
-        //配列に変換
+        //配列変換
         $values=json_decode(json_encode($request->all()),true);
 
+        //対応イベント
         event(new mytleRepeat($values,$bot));
+
         return 0;
     }
 
