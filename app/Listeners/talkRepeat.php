@@ -114,7 +114,7 @@ class talkRepeat
         }
 
         //返答送信
-        $values->bot->replyMessage($reply_token,$sendMessage);
+        $values->bot->replyMessage($reply_token,$sendMessage,$this->quickReplyDataA());
 
         return 0;
     }
@@ -135,7 +135,6 @@ class talkRepeat
                 return $keyword->comment;
             }
         }
-
         return ($message."\n"."なんだなっ！");
     }
 
@@ -162,7 +161,7 @@ class talkRepeat
                         )
                     )
                 );
-
+        return $values;
     }
 
 
