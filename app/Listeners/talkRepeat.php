@@ -136,7 +136,7 @@ class talkRepeat
             }
         }
 
-        return $message."\n"."なんだなっ！";
+        return ($message."\n"."なんだなっ！");
     }
 
 
