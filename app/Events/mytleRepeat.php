@@ -23,11 +23,13 @@ class mytleRepeat
 
      /*変数宣言*/
      public $request;
+     public $bot;
 
     //変数取り扱い
-    public function __construct($request)
+    public function __construct($request,$bot)
     {
         $this->request=$request;
+        $this->bot=$bot;
     }
 
     /**
