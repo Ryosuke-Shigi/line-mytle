@@ -81,25 +81,32 @@ class talkRepeat
                             break;
                         //画像
                         case 'image':
-                            $values->bot->replytext($reply_token,"知ってるんだなっ！\nこれは写真なんだなっ！\nかつて和歌山を３度、氷の世界に変えたこわいやつなんだなっ！！");
+                            $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder("これは写真なんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder("かつて和歌山を６度、氷の世界に変えたこわいやつなんだなっ！！"));
                             break;
                         //映像
                         case 'video':
-                            $values->bot->replytext($reply_token,"知ってるんだなっ！\nこれはむーびーなんだなっ！\nかつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！");
+                            $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder("これはむーびーなんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder("かつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！"));
                             break;
                         //音声
                         case 'audio':
-                            $values->bot->replytext($reply_token,"知ってるんだなっ！\nこれはみゅーじっくなんだなっ！\nかつて和歌山を４度、海の底にしずめたこわいやつなんだなっ！！");
+                            $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder("これはおんがくなんだなっ！"));
+                            $sendMessage->add(new TextMessageBuilder("かつて和歌山を３度、海の底に沈めたすごいやつなんだなっ！！"));
                             break;
                         //その他（locationなど）
                         default:
-                            $values->bot->replytext($reply_token,"メタメタに…メタメタにやられたんだなっ…！\n泣いても…許してくれなかったんだなっ…！");
+                            $sendMessage->add(new TextMessageBuilder("メタメタに…メタメタにやられたんだなっ…！"));
+                            $sendMessage->add(new TextMessageBuilder("泣いても…許してくれなかったんだなっ…！"));
                             break;
                     }
                     break;
 
                 case 'follow':
-                    $values->bot->replytext($reply_token,$event['source']['type']." さん！よろしくなんだなっ！");
+                    $sendMessage->add(new TextMessageBuilder($reply_token,$event['source']['type']." さん！よろしくなんだなっ！"));
                     break;
                 default:
                     break;
