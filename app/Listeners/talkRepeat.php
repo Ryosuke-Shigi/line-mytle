@@ -145,7 +145,7 @@ class talkRepeat
     private function quickReplyDataA(){
         $array = [
             'type' => 'text',
-            'text' => 'あなたの年齢を教えてください',
+            'text' => 'めーどのみやげを選ぶんだなっ！',
             'quickReply' => [
                 'items' => [
                   [
