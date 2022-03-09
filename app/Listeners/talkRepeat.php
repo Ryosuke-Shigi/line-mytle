@@ -113,8 +113,9 @@ class talkRepeat
             }
         }
 
+
         //返答送信
-        $values->bot->replyMessage($reply_token,$sendMessage,$this->quickReplyDataA());
+        $values->bot->replyMessage($reply_token,$sendMessage,json_encode($this->quickReplyDataA()));
 
         return 0;
     }
@@ -141,7 +142,10 @@ class talkRepeat
 
 
     private function quickReplyDataA(){
-        $values=array('quickReply' => array(
+        $values=array(
+                        'type'=>'text',
+                        'text'=>'text',
+                        'quickReply' => array(
                         'items' => array(
                             array('type' => 'action',
                                     'action' => array(
