@@ -127,17 +127,26 @@ class talkRepeat
         //変数初期化
         $comment="";
         $sendMessage = new MultiMessageBuilder();
-
-        //テーブル：オウム返しのキーワード等を取得
-        $keywords = DB::table('re_comments')->get();
-        //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
-        foreach($keywords as $keyword){
-            //あればコメントを返す準備をする
-            if(strpos($message,$keyword->keyword)!==false){
-                return $keyword->comment;
-            }
+        switch($message){
+            case "__blackboxA":
+                return "君のように勘のいい子供は嫌いだよ";
+                break;
+            case "__blackboxB":
+                return "ただし魔法は尻から出る";
+                break;
+            default:
+                //テーブル：オウム返しのキーワード等を取得
+                $keywords = DB::table('re_comments')->get();
+                //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
+                foreach($keywords as $keyword){
+                    //あればコメントを返す準備をする
+                    if(strpos($message,$keyword->keyword)!==false){
+                        return $keyword->comment;
+                    }
+                }
+                return ($message."\n"."なんだなっ！");
+                break;
         }
-        return ($message."\n"."なんだなっ！");
     }
 
 
@@ -152,34 +161,18 @@ class talkRepeat
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => 'A',
-                          'text' => 'A'
+                          'label' => '小さいつづら',
+                          'text' => '__blackboxA'
                         ]
                   ],
                   [
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => 'B',
-                          'text' => 'B'
+                          'label' => '大きいつづら',
+                          'text' => '__blackboxB'
                         ]
                   ],
-                  [
-                        'type' => 'action',
-                        'action' => [
-                          'type' => 'message',
-                          'label' => 'C',
-                          'text' => 'C'
-                        ]
-                  ],
-                  [
-                        'type' => 'action',
-                        'action' => [
-                          'type' => 'message',
-                          'label' => 'D',
-                          'text' => 'D'
-                        ]
-                  ]
                 ]
             ]
           ];
