@@ -116,6 +116,7 @@ class talkRepeat
 
         //返答送信
         $askAgeBuilder = new RawMessageBuilder($this->quickReplyDataA());
+        dump($askAgeBuilder);
         $values->bot->replyMessage($reply_token,$sendMessage,$askAgeBuilder);
 
         return 0;
@@ -143,30 +144,47 @@ class talkRepeat
 
 
     private function quickReplyDataA(){
-        $values=array(
-                        'type'=>'text',
-                        'text'=>'text',
-                        'quickReply' => array(
-                        'items' => array(
-                            array('type' => 'action',
-                                    'action' => array(
-                                    'type' => 'postback',
-                                    'label' => 'Data Send',
-                                    'data' => 'PostBackData',
-                                    'displayText' => 'ポストバックデータを送ります。',
-                                )
-                            ),
-                            array('type' => 'action',
-                                    'action' => array(
-                                    'type' => 'message',
-                                    'label' => 'Message Send',
-                                    'text' => 'テキストを送信します。',
-                                )
-                            )
-                        )
-                    )
-                );
-        return $values;
+        $array = [
+            'type' => 'text',
+            'text' => 'あなたの年齢を教えてください',
+            'quickReply' => [
+                'items' => [
+                  [
+                        'type' => 'action',
+                        'action' => [
+                          'type' => 'message',
+                          'label' => '20代',
+                          'text' => '20代'
+                        ]
+                  ],
+                  [
+                        'type' => 'action',
+                        'action' => [
+                          'type' => 'message',
+                          'label' => '30代',
+                          'text' => '30代'
+                        ]
+                  ],
+                  [
+                        'type' => 'action',
+                        'action' => [
+                          'type' => 'message',
+                          'label' => '40代',
+                          'text' => '40代'
+                        ]
+                  ],
+                  [
+                        'type' => 'action',
+                        'action' => [
+                          'type' => 'message',
+                          'label' => '50代',
+                          'text' => '50代'
+                        ]
+                  ]
+                ]
+            ]
+          ];
+        return $array;
     }
 
 
