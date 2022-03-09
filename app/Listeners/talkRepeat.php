@@ -67,6 +67,7 @@ class talkRepeat
                             switch($event['message']['text']){
                                 default:
                                     $sendMessage->add(new TextMessageBuilder($this->repeat($event['message']['text'])));
+                                    $sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
                                     break;
                             }
                             break;
@@ -115,9 +116,6 @@ class talkRepeat
 
 
         //返答送信
-        $askAgeBuilder = new RawMessageBuilder($this->quickReplyDataA());
-        dump($askAgeBuilder);
-        $values->bot->replyMessage($reply_token,$askAgeBuilder);
         $values->bot->replyMessage($reply_token,$sendMessage);
 
         return 0;
@@ -154,32 +152,32 @@ class talkRepeat
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => '20代',
-                          'text' => '20代'
+                          'label' => 'A',
+                          'text' => 'A'
                         ]
                   ],
                   [
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => '30代',
-                          'text' => '30代'
+                          'label' => 'B',
+                          'text' => 'B'
                         ]
                   ],
                   [
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => '40代',
-                          'text' => '40代'
+                          'label' => 'C',
+                          'text' => 'C'
                         ]
                   ],
                   [
                         'type' => 'action',
                         'action' => [
                           'type' => 'message',
-                          'label' => '50代',
-                          'text' => '50代'
+                          'label' => 'D',
+                          'text' => 'D'
                         ]
                   ]
                 ]
