@@ -33,14 +33,9 @@ class talkRepeat
      * @return void
      */
 
-    public $words;
-    public $voices;
-
     public function __construct()
     {
         //
-        $this->words=array('猫','パンダ','犬','タスマニアデビル','(emoji)');
-        $this->voices=array('にゃ～ん','笹食ってる場合じゃねぇ！','ワンワンイヌドッグ！','たすまにぁーんよいとこー','YOU ARE CHICKEN HEART！');
     }
 
     /**
@@ -54,15 +49,20 @@ class talkRepeat
         //$event    //eventsの変数を扱える
         //変数初期化
         $inputs=$values->request;
+        $sendMessage = new MultiMessageBuilder();
+
         foreach($inputs['events'] as $event){
             //token取得（存在していないアクションもあるのでisset）
             if(isset($event['replyToken'])){
                 $reply_token=$event['replyToken'];
             }
+            //イベント処理
             switch($event['type']){
                 case 'message':
-                    //メッセージかスタンプかの判断
                     switch($event['message']['type']){
+                        //メッセージ
+                        //$event['source']['userId']・・・userID
+
                         case 'text':
                             switch($event['message']['text']){
                                 default:
@@ -71,26 +71,27 @@ class talkRepeat
                             }
                             break;
 
-                        //以下、テキスト以外
+                        //スタンプ
                         case 'sticker':
                             //$bot->replytext($reply_token,"知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を２度、なにもない焦土にかえたこわいやつなんだなっ！！");
-                            $sendMessage = new MultiMessageBuilder();
                             $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
                             $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-                            //$sendMessage->add(new TextMessageBuilder($event['source']['userId']));//ID確認 これは固有っぽ
-                            $sendMessage->add(new TextMessageBuilder($this->quickReplyDataA()));
-                            $values->bot->replyMessage($reply_token,$sendMessage);
+                            $sendMessage->add(new TextMessageBuilder("僕は逃げるんだなっ！"));
                             break;
+                        //画像
                         case 'image':
                             $values->bot->replytext($reply_token,"知ってるんだなっ！\nこれは写真なんだなっ！\nかつて和歌山を３度、氷の世界に変えたこわいやつなんだなっ！！");
                             break;
+                        //映像
                         case 'video':
                             $values->bot->replytext($reply_token,"知ってるんだなっ！\nこれはむーびーなんだなっ！\nかつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！");
                             break;
+                        //音声
                         case 'audio':
                             $values->bot->replytext($reply_token,"知ってるんだなっ！\nこれはみゅーじっくなんだなっ！\nかつて和歌山を４度、海の底にしずめたこわいやつなんだなっ！！");
                             break;
+                        //その他（locationなど）
                         default:
                             $values->bot->replytext($reply_token,"メタメタに…メタメタにやられたんだなっ…！\n泣いても…許してくれなかったんだなっ…！");
                             break;
@@ -105,10 +106,14 @@ class talkRepeat
 
             }
         }
+
+        $values->bot->replyMessage($reply_token,$sendMessage);
+
         return 0;
     }
 
     //オウム返し＋α
+    //ここでもうメッセージ処理も行っている
     private function repeat($bot,$reply_token,$message){
         //変数初期化
         $comment="";
@@ -127,6 +132,8 @@ class talkRepeat
 
         return "repeat";
     }
+
+
 
     private function quickReplyDataA(){
         $values=array('quickReply' => array(
