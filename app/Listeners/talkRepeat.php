@@ -51,15 +51,10 @@ class talkRepeat
         $inputs=$values->request;
         $sendMessage = new MultiMessageBuilder();
 
-        $test="";
-
         foreach($inputs['events'] as $event){
             //token取得（存在していないアクションもあるのでisset）
             if(isset($event['replyToken'])){
                 $reply_token=$event['replyToken'];
-            }
-            if(isset($event['source']['userId'])){
-                $test=$event['source']['userId'];
             }
 
             //イベント処理
@@ -120,8 +115,6 @@ class talkRepeat
 
             }
         }
-        $sendMessage->add(new TextMessageBuilder($test));
-
         //返答送信
         $values->bot->replyMessage($reply_token,$sendMessage);
 
