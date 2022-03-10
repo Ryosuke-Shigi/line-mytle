@@ -170,8 +170,7 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-        $sendMessage->add($this->quickReplyData('めーどのみやげを選ぶんだなっ！',array('_小さいつづら_','_大きいつづら_')));
-        //$sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
+        $sendMessage->add($this->quickReply('めーどのみやげを選ぶんだなっ！',array('_小さいつづら_','_大きいつづら_')));
         return $sendMessage;
     }
     //画像返答
@@ -278,7 +277,7 @@ class talkRepeat
     //クイックリプライ変換
     //$question クエスチョン
     //$answer 解答（配列で複数個いれられる）
-    private function quickReplyData($question,$answer){
+    private function quickReply($question,$answer){
         $values=array('type'=>'text');
         $values+=array('text'=>$question);
         $values+=array('quickReply'=>array('items'=>array()));
@@ -293,7 +292,7 @@ class talkRepeat
     private function quickReplyDataA(){
 
         $items=array('_小さいつづら_','_大きいつづら_');
-        $values=$this->quickReplyData('めーどのみやげを選ぶんだなっ！',$items);
+        $values=$this->quickReply('めーどのみやげを選ぶんだなっ！',$items);
 
 
 /*         $values=array('type'=>'text');
