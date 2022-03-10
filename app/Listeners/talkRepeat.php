@@ -20,10 +20,12 @@ use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use LINE\LINEBot\QuickReplyBuilder\ButtonBuilder\QuickReplyButtonBuilder;
 use LINE\LINEBot\QuickReplyBuilder\QuickReplyMessageBuilder;
+use LINE\LINEBot\MessageBuilder\RawMessageBuilder;
 
 use Illuminate\Support\Facades\DB;
+
 use App\Models\reComment;
-use LINE\LINEBot\MessageBuilder\RawMessageBuilder;
+use App\Models\lineUser;
 
 class talkRepeat
 {
@@ -53,6 +55,8 @@ class talkRepeat
 
         foreach($inputs['events'] as $event){
             //token取得（存在していないアクションもあるのでisset）
+            //unfollowでないかぎりあります
+            //useridは全てにあります
             if(isset($event['replyToken'])){
                 $reply_token=$event['replyToken'];
             }
@@ -63,11 +67,13 @@ class talkRepeat
                     switch($event['message']['type']){
                         //メッセージ
                         //$event['source']['userId']・・・userID
-
+                        //メッセージ
                         case 'text':
-                            switch($event['message']['text']){
-                                default:
-                                    $sendMessage->add(new TextMessageBuilder($this->repeat($event['message']['text'])));
+                            //ユーザID存在チェック なければ作成
+                            $user=$this->checkUserid($event['source']['userId']);
+                            switch($user['status']){
+                                case 'init':
+                                    $sendMessage->add(new TextMessageBuilder($this->repeat($event['message']['text'],$user)));
                                     break;
                             }
                             break;
@@ -108,7 +114,7 @@ class talkRepeat
                     break;
 
                 case 'follow':
-                    $sendMessage->add(new TextMessageBuilder($reply_token,$event['source']['type']." さん！よろしくなんだなっ！"));
+                    $sendMessage->add(new TextMessageBuilder($reply_token,"よろしくお願いするんだなっ！"));
                     break;
                 default:
                     break;
@@ -123,16 +129,16 @@ class talkRepeat
 
     //オウム返し＋α
     //ここでもうメッセージ処理も行っている
-    private function repeat($message){
+    private function repeat($message,$user){
         //変数初期化
         $comment="";
         $sendMessage = new MultiMessageBuilder();
         switch($message){
             case "_大きいつづら_":
-                return "君のように勘のいい子供は嫌いだよ";
+                $comment = "君のように勘のいい子供は嫌いだよ";
                 break;
             case "_小さいつづら_":
-                return "ただし魔法は尻から出る";
+                $comment = "ただし魔法は尻から出る";
                 break;
             default:
                 //テーブル：オウム返しのキーワード等を取得
@@ -141,16 +147,45 @@ class talkRepeat
                 foreach($keywords as $keyword){
                     //あればコメントを返す準備をする
                     if(strpos($message,$keyword->keyword)!==false){
-                        return $keyword->comment;
+                        $comment = $keyword->comment."\nなんだなっ！";
+                        break;
                     }
                 }
-                return ($message."\n"."なんだなっ！");
                 break;
         }
+        return $comment;
+    }
+
+    //userid登録済かを確認 なければ作成する
+    private function checkUserid($id){
+        //ユーザ存在チェックフラグ
+        $values=array();
+        $lineUser = DB::table('line_users')->where('userid','=',$id)->first();
+        //なければ作成
+        if($lineUser==null){
+            DB::beginTransaction();
+            try{
+                $newData = new lineUser;
+                $newData->userid=$id;
+                $newData->status="init";
+                $newData->step=0;
+                $newData->save();
+                $values=array('status'=>"init",'step'=>0);
+                DB::commit();
+            }catch(Exception $exception){
+                DB::rollBack();
+                return false;
+            }
+        }else{
+            $values=array('status'=>$lineUser->status,'step'=>$lineUser->step);
+        }
+        return $values;
     }
 
 
 
+
+    //クイックリプライ用配列変換
     private function quickReplyDataA(){
         $array = [
             'type' => 'text',
