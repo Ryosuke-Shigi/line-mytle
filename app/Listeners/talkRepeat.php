@@ -73,7 +73,7 @@ class talkRepeat
                             $user=$this->checkUserid($event['source']['userId']);
                             switch($user['status']){
                                 case 'init':
-                                    $sendMessage->add(new TextMessageBuilder($this->repeat($event['message']['text'],$user)));
+                                    $sendMessage=$this->repeat($event['message']['text'],$user);
                                     break;
                             }
                             break;
@@ -135,27 +135,27 @@ class talkRepeat
         $sendMessage = new MultiMessageBuilder();
         switch($message){
             case "_大きいつづら_":
-                $comment = "君のように勘のいい子供は嫌いだよ";
+                $sendMessage->add(new TextMessageBuilder("君のように勘のいい子供は嫌いだよ"));
                 break;
             case "_小さいつづら_":
-                $comment = "ただし魔法は尻から出る";
+                $sendMessage->add(new TextMessageBuilder("ただし魔法は尻から出る"));
                 break;
             default:
                 //テーブル：オウム返しのキーワード等を取得
                 $keywords = DB::table('re_comments')->get();
                 //一旦、そのままのコメントを保持する
-                $comment=$message."\nなんだなっ！";
+                $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
                 //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
                 foreach($keywords as $keyword){
                     //あればコメントを返す準備をする
                     if(strpos($message,$keyword->keyword)!==false){
-                        $comment = $keyword->comment;
+                        $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
                         break;
                     }
                 }
                 break;
         }
-        return $comment;
+        return $sendMessage;
     }
 
     //userid登録済かを確認 なければ作成する
@@ -184,6 +184,13 @@ class talkRepeat
         return $values;
     }
 
+    private function initStatus($id){
+        $user = LineUser::where('userid','=',$id)->first();
+        $user->status='init';
+        $user->step=0;
+        $user->update();
+        return 0;
+    }
 
 
 
