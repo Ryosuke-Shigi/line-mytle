@@ -144,12 +144,12 @@ class talkRepeat
                 //テーブル：オウム返しのキーワード等を取得
                 $keywords = DB::table('re_comments')->get();
                 //一旦、そのままのコメントを保持する
-                $comment=$message;
+                $comment=$message."\nなんだなっ！";
                 //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
                 foreach($keywords as $keyword){
                     //あればコメントを返す準備をする
                     if(strpos($message,$keyword->keyword)!==false){
-                        $comment = $keyword->comment."\nなんだなっ！";
+                        $comment = $keyword->comment;
                         break;
                     }
                 }
