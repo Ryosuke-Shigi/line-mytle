@@ -71,39 +71,29 @@ class talkRepeat
                         case 'text':
                             //ユーザID存在チェック なければ作成
                             $user=$this->checkUserid($event['source']['userId']);
-                            switch($user['status']){
-                                case 'init':
-                                    $sendMessage=$this->repeat($event['message']['text'],$user);
-                                    break;
+                            if($user!=false){
+                                switch($user['status']){
+                                    case 'init':
+                                        $sendMessage=$this->repeat($event['message']['text'],$user);
+                                        break;
+                                }
                             }
                             break;
-
                         //スタンプ
                         case 'sticker':
-                            //$bot->replytext($reply_token,"知ってるんだなっ！\nこれはスタンプなんだなっ！\nかつて和歌山を２度、なにもない焦土にかえたこわいやつなんだなっ！！");
-                            $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
-                            $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
-                            $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-                            $sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
-
+                            $sendMessage=$this->reSticker();
                             break;
                         //画像
                         case 'image':
-                            $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
-                            $sendMessage->add(new TextMessageBuilder("これは写真なんだなっ！"));
-                            $sendMessage->add(new TextMessageBuilder("かつて和歌山を６度、氷の世界に変えたこわいやつなんだなっ！！"));
+                            $sendMessage=$this->reImage();
                             break;
                         //映像
                         case 'video':
-                            $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
-                            $sendMessage->add(new TextMessageBuilder("これはむーびーなんだなっ！"));
-                            $sendMessage->add(new TextMessageBuilder("かつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！"));
+                            $sendMessage=$this->reVideo();
                             break;
                         //音声
                         case 'audio':
-                            $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
-                            $sendMessage->add(new TextMessageBuilder("これはおんがくなんだなっ！"));
-                            $sendMessage->add(new TextMessageBuilder("かつて和歌山を３度、海の底に沈めたすごいやつなんだなっ！！"));
+                            $sendMessage=$this->reAudio();
                             break;
                         //その他（locationなど）
                         default:
@@ -114,7 +104,7 @@ class talkRepeat
                     break;
 
                 case 'follow':
-                    $sendMessage->add(new TextMessageBuilder($reply_token,"よろしくお願いするんだなっ！"));
+                    $sendMessage->add(new TextMessageBuilder("よろしくお願いするんだなっ！"));
                     break;
                 default:
                     break;
@@ -126,6 +116,21 @@ class talkRepeat
 
         return 0;
     }
+
+
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  返答アクション
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
     //オウム返し＋α
     //ここでもうメッセージ処理も行っている
@@ -158,6 +163,56 @@ class talkRepeat
         return $sendMessage;
     }
 
+
+
+
+
+    //スタンプ返答
+    private function reSticker(){
+        $sendMessage = new MultiMessageBuilder();
+        $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
+        $sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
+        return $sendMessage;
+    }
+    //画像返答
+    private function reImage(){
+        $sendMessage = new MultiMessageBuilder();
+        $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("これは写真なんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("かつて和歌山を６度、氷の世界に変えたこわいやつなんだなっ！！"));
+        return $sendMessage;
+    }
+    //映像返答
+    private function reVideo(){
+        $sendMessage = new MultiMessageBuilder();
+        $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("これはむーびーなんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("かつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！"));
+        return $sendMessage;
+    }
+    //音声返答
+    private function reAudio(){
+        $sendMessage = new MultiMessageBuilder();
+        $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("これはおんがくなんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("かつて和歌山を３度、海の底に沈めたすごいやつなんだなっ！！"));
+        return $sendMessage;
+    }
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  ユーザテーブル編集
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
     //userid登録済かを確認 なければ作成する
     private function checkUserid($id){
         //ユーザ存在チェックフラグ
@@ -184,6 +239,7 @@ class talkRepeat
         return $values;
     }
 
+    //ユーザ初期化
     private function initStatus($id){
         $user = LineUser::where('userid','=',$id)->first();
         $user->status='init';
@@ -191,10 +247,39 @@ class talkRepeat
         $user->update();
         return 0;
     }
+    //ステータス変更
+    private function changeStatus($id,$status){
+        $user = LineUser::where('userid','=',$id)->first();
+        $user->status=$status;
+        $user->update();
+        return 0;
+    }
+    //ステップ変更
+    private function changeStep($id,$step){
+        $user = LineUser::where('userid','=',$id)->first();
+        $user->step=$step;
+        $user->update();
+        return 0;
+    }
 
 
 
-    //クイックリプライ用配列変換
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  クイックリプライ
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    //おためしクイックリプライ用配列変換
     private function quickReplyDataA(){
         $array = [
             'type' => 'text',
