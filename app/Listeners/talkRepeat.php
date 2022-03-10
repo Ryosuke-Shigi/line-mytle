@@ -170,7 +170,9 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-        $sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
+        $items=array('_小さいつづら_','_大きいつづら_');
+        $sendMessage->add($this->quickReplyData('めーどのみやげを選ぶんだなっ！',$items));
+        //$sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
         return $sendMessage;
     }
     //画像返答
@@ -274,18 +276,35 @@ class talkRepeat
 
 
 
-
+    //クイックリプライ変換
+    //$question クエスチョン
+    //$answer 解答（配列で複数個いれられる）
+    private function quickReplyData($question,$answer){
+        $values=array('type'=>'text');
+        $values+=array('text'=>$question);
+        $values+=array('quickReply'=>array('items'=>array()));
+        foreach($answer as $value){
+            array_push($values['quickReply']['items'],array('type'=>'action','action'=>array('type'=>'message','label'=>$value,'text'=>$value)));
+        }
+        $sendMessage=new RawMessageBuilder($values);
+        return $sendMessage;
+    }
 
     //おためしクイックリプライ用配列変換
     private function quickReplyDataA(){
-        $values=array('type'=>'text');
+
+        $items=array('_小さいつづら_','_大きいつづら_');
+        $values=$this->quickReplyData('めーどのみやげを選ぶんだなっ！',$items);
+
+
+/*         $values=array('type'=>'text');
         $values+=array('text'=>'めーどのおみやげを選ぶんだなっ');
         $values+=array('quickReply'=>array('items'=>array()));
         //$values['quickReply']['items']+=array('type'=>'action','action'=>array('type'=>'message','label'=>'text1','text'=>'text1'));
         $item=array('type'=>'action','action'=>array('type'=>'message','label'=>'_小さいつづら_','text'=>'_小さいつづら_'));
         $item2=array('type'=>'action','action'=>array('type'=>'message','label'=>'_大きいつづら_','text'=>'_大きいつづら_'));
         array_push($values['quickReply']['items'],$item);
-        array_push($values['quickReply']['items'],$item2);
+        array_push($values['quickReply']['items'],$item2); */
 
 
 /*         $array = [
