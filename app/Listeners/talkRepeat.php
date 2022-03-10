@@ -143,6 +143,8 @@ class talkRepeat
             default:
                 //テーブル：オウム返しのキーワード等を取得
                 $keywords = DB::table('re_comments')->get();
+                //一旦、そのままのコメントを保持する
+                $comment=$message;
                 //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
                 foreach($keywords as $keyword){
                     //あればコメントを返す準備をする
