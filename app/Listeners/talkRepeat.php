@@ -72,11 +72,8 @@ class talkRepeat
                             //ユーザID存在チェック なければ作成
                             $user=$this->checkUserid($event['source']['userId']);
                             if($user!=false){
-                                switch($user['status']){
-                                    case 'init':
-                                        $sendMessage=$this->repeat($event['message']['text'],$user);
-                                        break;
-                                }
+                                $sendMessage=$this->repeat($event['message']['text'],$user);
+                                break;
                             }
                             break;
                         //スタンプ
@@ -132,11 +129,11 @@ class talkRepeat
 
 
 
+
     //オウム返し＋α
     //ここでもうメッセージ処理も行っている
     private function repeat($message,$user){
         //変数初期化
-        $comment="";
         $sendMessage = new MultiMessageBuilder();
         switch($message){
             case "_大きいつづら_":
@@ -227,14 +224,14 @@ class talkRepeat
                 $newData->status="init";
                 $newData->step=0;
                 $newData->save();
-                $values=array('status'=>"init",'step'=>0);
+                $values=array('userid'=>$id,'status'=>"init",'step'=>0);
                 DB::commit();
             }catch(Exception $exception){
                 DB::rollBack();
                 return false;
             }
         }else{
-            $values=array('status'=>$lineUser->status,'step'=>$lineUser->step);
+            $values=array('userid'=>$id,'status'=>$lineUser->status,'step'=>$lineUser->step);
         }
         return $values;
     }
@@ -281,7 +278,17 @@ class talkRepeat
 
     //おためしクイックリプライ用配列変換
     private function quickReplyDataA(){
-        $array = [
+        $values=array('type'=>'text');
+        $values+=array('text'=>'めーどのおみやげを選ぶんだなっ');
+        $values+=array('quickReply'=>array('items'=>array()));
+        //$values['quickReply']['items']+=array('type'=>'action','action'=>array('type'=>'message','label'=>'text1','text'=>'text1'));
+        $item=array('type'=>'action','action'=>array('type'=>'message','label'=>'_小さいつづら_','text'=>'_小さいつづら_'));
+        $item2=array('type'=>'action','action'=>array('type'=>'message','label'=>'_大きいつづら_','text'=>'_大きいつづら_'));
+        array_push($values['quickReply']['items'],$item);
+        array_push($values['quickReply']['items'],$item2);
+
+
+/*         $array = [
             'type' => 'text',
             'text' => 'めーどのみやげを選ぶんだなっ！',
             'quickReply' => [
@@ -305,7 +312,8 @@ class talkRepeat
                 ]
             ]
           ];
-        return $array;
+ */
+        return $values;
     }
 
 
