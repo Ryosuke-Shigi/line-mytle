@@ -170,8 +170,7 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-        $items=array('_小さいつづら_','_大きいつづら_');
-        $sendMessage->add($this->quickReplyData('めーどのみやげを選ぶんだなっ！',$items));
+        $sendMessage->add($this->quickReplyData('めーどのみやげを選ぶんだなっ！',array('_小さいつづら_','_大きいつづら_')));
         //$sendMessage->add(new RawMessageBuilder($this->quickReplyDataA()));
         return $sendMessage;
     }
