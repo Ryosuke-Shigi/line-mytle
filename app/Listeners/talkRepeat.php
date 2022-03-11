@@ -174,11 +174,11 @@ class talkRepeat
                 $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
                 break;
             case "- STAMP_RALLY -":
-                $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成したり遊んだり\n初webアプリ"));
+                $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べる\n初自作ＷＥＢアプリ"));
                 $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
                 break;
             case "- 地図茶 -":
-                $sendMessage->add(new TextMessageBuilder("地図共有できる\nリアルタイムチャット"));
+                $sendMessage->add(new TextMessageBuilder("地図共有できる\nリアルタイムチャット\npusherを使ってみたかった"));
                 $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
                 break;
             default:
