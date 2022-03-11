@@ -170,6 +170,7 @@ class talkRepeat
 
         switch($message){
             case "ポートフォリオ":
+            case "ﾎﾟｰﾄﾌｫﾘｵ":
                 $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
                 break;
             case "- STAMP_RALLY -":
