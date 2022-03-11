@@ -173,18 +173,12 @@ class talkRepeat
                 $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
                 break;
             case "- STAMP_RALLY -":
-                $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べます"));
+                $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成したり遊んだり\n初webアプリ"));
                 $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
                 break;
             case "- 地図茶 -":
-                $sendMessage->add(new TextMessageBuilder("地図共有できるチャット"));
+                $sendMessage->add(new TextMessageBuilder("地図共有できる\nリアルタイムチャット"));
                 $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
-                break;
-            case "_大きいつづら_":
-                $sendMessage->add(new TextMessageBuilder("君のように勘のいい子供は嫌いだよ"));
-                break;
-            case "_小さいつづら_":
-                $sendMessage->add(new TextMessageBuilder("ただし魔法は尻から出る"));
                 break;
             default:
                 //テーブル：オウム返しのキーワード等を取得
@@ -214,7 +208,6 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-        $sendMessage->add($this->quickReply('めーどのみやげを選ぶんだなっ！',array('_小さいつづら_','_大きいつづら_')));
         return $sendMessage;
     }
     //画像返答
