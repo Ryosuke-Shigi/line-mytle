@@ -71,6 +71,7 @@ class talkRepeat
                         case 'text':
                             //ユーザID存在チェック なければ作成
                             $user=$this->checkUserid($event['source']['userId']);
+                            dump($user);
                             if($user!=false){
                                 $sendMessage=$this->repeat($event['message']['text'],$user);
                                 break;
@@ -135,7 +136,50 @@ class talkRepeat
     private function repeat($message,$user){
         //変数初期化
         $sendMessage = new MultiMessageBuilder();
+
+
+/*         //状態を取得
+        $lineUser = DB::table('line_users')->where('userid','=',$user->userid)->first();
+
+        if($lineUser->status == 'init'){
+            $firstTalk = DB::table('first_talks')->where('message','=',$message)->first();
+            if($firstTalk==null){
+                //オウム返し
+            }else{
+                //テーブル：オウム返しのキーワード等を取得
+                $keywords = DB::table('re_comments')->get();
+                //一旦、そのままのコメントを保持する
+                $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
+                //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
+                foreach($keywords as $keyword){
+                    //あればコメントを返す準備をする
+                    if(strpos($message,$keyword->keyword)!==false){
+                        $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
+                        break;
+                    }
+                }
+            }
+        }else{
+
+
+
+        }
+ */
+
+
+
         switch($message){
+            case "ポートフォリオ":
+                $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
+                break;
+            case "- STAMP_RALLY -":
+                $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べます"));
+                $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
+                break;
+            case "- 地図茶 -":
+                $sendMessage->add(new TextMessageBuilder("地図共有できるチャット"));
+                $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
+                break;
             case "_大きいつづら_":
                 $sendMessage->add(new TextMessageBuilder("君のように勘のいい子供は嫌いだよ"));
                 break;
