@@ -102,6 +102,7 @@ class talkRepeat
                         case 'text':
                             //ユーザID存在チェック なければ作成
                             $user=$this->checkUserid($event['source']['userId']);
+
                             if($user!=false){
                                 $sendMessage=$this->repeat($event['message']['text'],$user);
                                 break;
@@ -195,7 +196,7 @@ class talkRepeat
 
 
         //状態を取得
-        //$lineUser = DB::table('line_users')->where('userid','=',$user->userid)->first();
+        $lineUser = DB::table('line_users')->where('userid','=',$user['userid'])->first();
 
         //メッセージ内容について
         switch($message){
@@ -224,12 +225,12 @@ class talkRepeat
                     }
                 }
                 //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
-/*                 if($lineUser->status != 'init'){
+                if($lineUser->status != 'init'){
                     $user = LineUser::where('userid','=',$$user->userid)->first();
                     $user->status="init";
                     $user->step=0;
                     $user->update();
-                } */
+                }
                 break;
         }
         return $sendMessage;
