@@ -224,12 +224,12 @@ class talkRepeat
                     }
                 }
                 //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
-                if($lineUser->status != 'init'){
+/*                 if($lineUser->status != 'init'){
                     $user = LineUser::where('userid','=',$$user->userid)->first();
                     $user->status="init";
                     $user->step=0;
                     $user->update();
-                }
+                } */
                 break;
         }
         return $sendMessage;
