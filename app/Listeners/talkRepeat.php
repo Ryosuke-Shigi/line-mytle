@@ -102,7 +102,6 @@ class talkRepeat
                         case 'text':
                             //ユーザID存在チェック なければ作成
                             $user=$this->checkUserid($event['source']['userId']);
-                            dump($user);
                             if($user!=false){
                                 $sendMessage=$this->repeat($event['message']['text'],$user);
                                 break;
@@ -167,8 +166,6 @@ class talkRepeat
     private function repeat($message,$user){
         //変数初期化
         $sendMessage = new MultiMessageBuilder();
-
-
 /*
         if($lineUser->status == 'init'){
             $firstTalk = DB::table('first_talks')->where('message','=',$message)->first();
@@ -198,8 +195,7 @@ class talkRepeat
 
 
         //状態を取得
-        $lineUser = DB::table('line_users')->where('userid','=',$user->userid)->first();
-
+        //$lineUser = DB::table('line_users')->where('userid','=',$user->userid)->first();
 
         //メッセージ内容について
         switch($message){
