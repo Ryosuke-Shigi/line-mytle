@@ -61,7 +61,38 @@ class talkRepeat
                 $reply_token=$event['replyToken'];
             }
 
-            //イベント処理
+            /*
+                if(firststep){
+                    $table=DB(最初のコメントへの対応をテーブルでししぼる)
+                    $answertable->DB(そのメッセージに関連するクイックリプライ項目を全て取得)
+                    $answers=array();
+                    //解答関係を全て一つの配列にまとめる
+                    foreach(answertable){
+                        array_push($answers,解答)
+                    }
+                    //クイックリプレイにまとめる
+                    $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
+
+                }else{
+                    $table=DB('現在どのステップか　で取り出すテーブルを変える)->(where step)->first()
+                    $answerTable=DB::('ステップとstatusから該当する解凍（場合によっては複数をとりだす)->get()
+                    $answers=array();
+                        答えをいれる
+                            $sendMessage->add(new TextMessageBuilder("メタメタに…メタメタにやられたんだなっ…！"));
+                    }
+                    status='init'
+                    step=0;
+                    にする
+
+                }
+
+
+
+
+            */
+
+
+            //イベント処理（テーブル仕様にした場合、ここは大幅修正が必要
             switch($event['type']){
                 case 'message':
                     switch($event['message']['type']){
@@ -138,9 +169,7 @@ class talkRepeat
         $sendMessage = new MultiMessageBuilder();
 
 
-/*         //状態を取得
-        $lineUser = DB::table('line_users')->where('userid','=',$user->userid)->first();
-
+/*
         if($lineUser->status == 'init'){
             $firstTalk = DB::table('first_talks')->where('message','=',$message)->first();
             if($firstTalk==null){
@@ -168,9 +197,13 @@ class talkRepeat
 
 
 
+        //状態を取得
+        $lineUser = DB::table('line_users')->where('userid','=',$user->userid)->first();
+
+
+        //メッセージ内容について
         switch($message){
             case "ポートフォリオ":
-            case "ﾎﾟｰﾄﾌｫﾘｵ":
                 $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
                 break;
             case "- STAMP_RALLY -":
@@ -194,7 +227,14 @@ class talkRepeat
                         break;
                     }
                 }
-                break;
+                //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
+/*                 if($lineUser->status != 'init'){
+                    $user = LineUser::where('userid','=',$$user->userid)->first();
+                    $user->status="init";
+                    $user->step=0;
+                    $user->update();
+                }
+                break; */
         }
         return $sendMessage;
     }
