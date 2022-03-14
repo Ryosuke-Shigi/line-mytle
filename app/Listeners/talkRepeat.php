@@ -26,6 +26,10 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\reComment;
 use App\Models\lineUser;
+use App\Models\replyAnswer;
+use App\Models\replyReaction;
+use App\Models\reReply;
+
 
 class talkRepeat
 {
@@ -60,38 +64,6 @@ class talkRepeat
             if(isset($event['replyToken'])){
                 $reply_token=$event['replyToken'];
             }
-
-            /*
-                if(firststep){
-                    $table=DB(最初のコメントへの対応をテーブルでししぼる)
-                    $answertable->DB(そのメッセージに関連するクイックリプライ項目を全て取得)
-                    $answers=array();
-                    //解答関係を全て一つの配列にまとめる
-                    foreach(answertable){
-                        array_push($answers,解答)
-                    }
-                    //クイックリプレイにまとめる
-                    $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
-
-                }else{
-                    $table=DB('現在どのステップか　で取り出すテーブルを変える)->(where step)->first()
-                    $answerTable=DB::('ステップとstatusから該当する解凍（場合によっては複数をとりだす)->get()
-                    $answers=array();
-                        答えをいれる
-                            $sendMessage->add(new TextMessageBuilder("メタメタに…メタメタにやられたんだなっ…！"));
-                    }
-                    status='init'
-                    step=0;
-                    にする
-
-                }
-
-
-
-
-            */
-
-
             //イベント処理（テーブル仕様にした場合、ここは大幅修正が必要
             switch($event['type']){
                 case 'message':
@@ -102,11 +74,7 @@ class talkRepeat
                         case 'text':
                             //ユーザID存在チェック なければ作成
                             $user=$this->checkUserid($event['source']['userId']);
-
-                            if($user!=false){
-                                $sendMessage=$this->repeat($event['message']['text'],$user);
-                                break;
-                            }
+                            $sendMessage=$this->repeat($event['message']['text'],$user);
                             break;
                         //スタンプ
                         case 'sticker':
@@ -140,6 +108,9 @@ class talkRepeat
 
             }
         }
+
+
+
         //返答送信
         $values->bot->replyMessage($reply_token,$sendMessage);
 
@@ -166,73 +137,107 @@ class talkRepeat
     //ここでもうメッセージ処理も行っている
     private function repeat($message,$user){
         //変数初期化
+        //最終的にこれを返します
         $sendMessage = new MultiMessageBuilder();
-/*
-        if($lineUser->status == 'init'){
-            $firstTalk = DB::table('first_talks')->where('message','=',$message)->first();
-            if($firstTalk==null){
-                //オウム返し
-            }else{
-                //テーブル：オウム返しのキーワード等を取得
-                $keywords = DB::table('re_comments')->get();
-                //一旦、そのままのコメントを保持する
-                $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
-                //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
-                foreach($keywords as $keyword){
-                    //あればコメントを返す準備をする
-                    if(strpos($message,$keyword->keyword)!==false){
-                        $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
-                        break;
+
+        //状態を取得
+        $lineUser = DB::table('line_users')->where('userid','=',$user['userid'])->first();
+        //userのstatusとstepとメッセージから返答を引っ張り出す（必ず１件）
+        $reReply = DB::table('re_replies')
+                            ->where('status','=',$user->status)
+                            ->where('step','=',$user->step)
+                            ->where('keyword','=',$message)
+                            ->first();
+
+        //もしreReplyに該当するものがなければ、特定アクションはなくオウム返しか
+        //特定キーワードが入っていればそれで返す（猫ならにゃーんとか）
+        if($reReply == null){
+            //メッセージ内容について
+            switch($message){
+                case "ポートフォリオ":
+                    $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
+                    break;
+                case "- STAMP_RALLY -":
+                    $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べる\n初自作ＷＥＢアプリ"));
+                    $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
+                    break;
+                case "- 地図茶 -":
+                    $sendMessage->add(new TextMessageBuilder("地図共有できる\nリアルタイムチャット\npusherを使ってみたかった"));
+                    $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
+                    break;
+                default:
+                    //オウム返し
+                    //テーブル：オウム返しのキーワード等を取得
+                    $keywords = DB::table('re_comments')->get();
+                    //一旦、そのままのコメントを保持する
+                    $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
+                    //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
+                    foreach($keywords as $keyword){
+                        //あればコメントを返す準備をする
+                        if(strpos($message,$keyword->keyword)!==false){
+                            $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
+                            break;
+                        }
                     }
-                }
+                    //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
+                    if($lineUser->status != 'init'){
+                        $user = LineUser::where('userid','=',$$user->userid)->first();
+                        $user->status="init";
+                        $user->step=0;
+                        $user->update();
+                    }
+                    break;
+            }
+        }else{
+            //テーブル上での特定リアクションが存在していれば　それで対応する
+
+
+        }
+
+
+/*         if($lineUser->status == 'init'){
+            //メッセージ内容について
+            switch($message){
+                case "ポートフォリオ":
+                    $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
+                    break;
+                case "- STAMP_RALLY -":
+                    $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べる\n初自作ＷＥＢアプリ"));
+                    $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
+                    break;
+                case "- 地図茶 -":
+                    $sendMessage->add(new TextMessageBuilder("地図共有できる\nリアルタイムチャット\npusherを使ってみたかった"));
+                    $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
+                    break;
+                default:
+                    //オウム返し
+                    //テーブル：オウム返しのキーワード等を取得
+                    $keywords = DB::table('re_comments')->get();
+                    //一旦、そのままのコメントを保持する
+                    $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
+                    //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
+                    foreach($keywords as $keyword){
+                        //あればコメントを返す準備をする
+                        if(strpos($message,$keyword->keyword)!==false){
+                            $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
+                            break;
+                        }
+                    }
+                    //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
+                    if($lineUser->status != 'init'){
+                        $user = LineUser::where('userid','=',$$user->userid)->first();
+                        $user->status="init";
+                        $user->step=0;
+                        $user->update();
+                    }
+                    break;
             }
         }else{
 
 
 
-        }
- */
+        } */
 
-
-
-        //状態を取得
-        $lineUser = DB::table('line_users')->where('userid','=',$user['userid'])->first();
-
-        //メッセージ内容について
-        switch($message){
-            case "ポートフォリオ":
-                $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
-                break;
-            case "- STAMP_RALLY -":
-                $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べる\n初自作ＷＥＢアプリ"));
-                $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
-                break;
-            case "- 地図茶 -":
-                $sendMessage->add(new TextMessageBuilder("地図共有できる\nリアルタイムチャット\npusherを使ってみたかった"));
-                $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
-                break;
-            default:
-                //テーブル：オウム返しのキーワード等を取得
-                $keywords = DB::table('re_comments')->get();
-                //一旦、そのままのコメントを保持する
-                $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
-                //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
-                foreach($keywords as $keyword){
-                    //あればコメントを返す準備をする
-                    if(strpos($message,$keyword->keyword)!==false){
-                        $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
-                        break;
-                    }
-                }
-                //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
-                if($lineUser->status != 'init'){
-                    $user = LineUser::where('userid','=',$$user->userid)->first();
-                    $user->status="init";
-                    $user->step=0;
-                    $user->update();
-                }
-                break;
-        }
         return $sendMessage;
     }
 
