@@ -297,6 +297,7 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
+        $this->initStatus($user['userid']);
         return $sendMessage;
     }
     //画像返答
@@ -305,6 +306,7 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これは写真なんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を６度、氷の世界に変えたこわいやつなんだなっ！！"));
+        $this->initStatus($user['userid']);
         return $sendMessage;
     }
     //映像返答
@@ -313,6 +315,7 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはむーびーなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！"));
+        $this->initStatus($user['userid']);
         return $sendMessage;
     }
     //音声返答
@@ -321,6 +324,7 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはおんがくなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を３度、海の底に沈めたすごいやつなんだなっ！！"));
+        $this->initStatus($user['userid']);
         return $sendMessage;
     }
 
