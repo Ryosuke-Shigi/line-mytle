@@ -143,86 +143,106 @@ class talkRepeat
         //状態を取得
         $lineUser = DB::table('line_users')->where('userid','=',$user['userid'])->first();
 
-        //送られてきたメッセージを元に判断（クイックリプライもキーワードできます）
-        //userのstatusとstepとメッセージから返答を引っ張り出す（必ず１件）
-        $reReply = DB::table('re_replies')
+        //クイックリプライでの対応かを判断する
+        //ステータスがinitの完結リアクションは存在しない
+        $replyReaction = DB::table('reply_reactions')
                             ->where('status','=',$user['status'])
                             ->where('step','=',$user['step'])
                             ->where('keyword','=',$message)
-                            ->first();
-
-        //もしreReplyに該当するものがなければ、特定アクションはなくオウム返しか
-        //特定キーワードが入っていればそれで返す（猫ならにゃーんとか）
-        if($reReply != null){
-            //status step keywordより 特定キーワード
-            $reAnswer = DB::table('reply_answers')
-                            ->where('status','=',$message)
-                            ->where('step','=',$user['step'])
                             ->get();
-            //解答あればクイックリプライメッセージ
-            if($reAnswer != null){
-                $arrayAnswer = array();
-                foreach($reAnswer as $answer){
-                    array_push($arrayAnswer,$answer->text);
-                }
-                $sendMessage->add($this->quickReply($reReply->text,$arrayAnswer));
-                dump($sendMessage);
-            }else{
-                //解答がなければ(適当にメッセージいれたら)
-                $user = LineUser::where('userid','=',$$user->userid)->first();
-                $user->status="init";
-                $user->step=0;
-                $user->update();
-                $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
+
+        //replyReactionはクイックリプライなしのメッセージ対応
+        //出すだけでよい
+        if($replyReaction!=false){
+            foreach($replyReaction as $reaction){
+                $sendMessage->add(new TextMessageBuilder($reaction->text));
             }
-
         }else{
-            //status step keywordより reReplyにはいっていなければ
-            //特定なしキーワード
-            //メッセージ内容について
-            switch($message){
-                case "ポートフォリオ":
-                    $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
-                    break;
-                case "- STAMP_RALLY -":
-                    $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べる\n初自作ＷＥＢアプリ"));
-                    $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
-                    break;
-                case "- 地図茶 -":
-                    $sendMessage->add(new TextMessageBuilder("地図共有\nリアルタイムチャット\npusherを使ってみたかった"));
-                    $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
-                    break;
-                default:
-                    //キーワードがなければオウム返しのフラグ
-                    $keyflg=false;
-                    //テーブル：オウム返しのキーワード等を取得
-                    $keywords = DB::table('re_comments')->get();
-                    //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
-                    foreach($keywords as $keyword){
-                        //あればコメントを返す準備をする
-                        if(strpos($message,$keyword->keyword)!==false){
-                            $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
-                            $keyflg=true;
-                            break;
-                        }
-                    }
+            //送られてきたメッセージを元に判断（クイックリプライもキーワードできます）
+            //userのstatusとstepとメッセージから返答を引っ張り出す（必ず１件）
+            $reReply = DB::table('re_replies')
+                                ->where('status','=',$user['status'])
+                                ->where('step','=',$user['step'])
+                                ->where('keyword','=',$message)
+                                ->first();
 
-                    //該当キーワードがなければオウム返し
-                    if($keyflg==false){
-                        $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
+            //もしreReplyに該当するものがなければ、特定アクションはなくオウム返しか
+            //特定キーワードが入っていればそれで返す（猫ならにゃーんとか）
+            if($reReply != null){
+                //status step keywordより 特定キーワード
+                $reAnswer = DB::table('reply_answers')
+                                ->where('status','=',$message)
+                                ->where('step','=',$user['step'])
+                                ->get();
+                //解答あればクイックリプライメッセージ
+                if($reAnswer != null){
+                    $arrayAnswer = array();
+                    foreach($reAnswer as $answer){
+                        array_push($arrayAnswer,$answer->text);
                     }
-
-                    //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
-                    if($lineUser->status != 'init'){
-                        $user = LineUser::where('userid','=',$$user->userid)->first();
-                        $user->status="init";
-                        $user->step=0;
-                        $user->update();
-                        $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
-                    }
-                    break;
+                    //クリックリプライをおくる
+                    $sendMessage->add($this->quickReply($reReply->text,$arrayAnswer));
+                    //ここでstatusとstepをユーザへ
+                    $this->changeStatus($user['userid'],$reReply->nextStatus);
+                }else{
+                    //解答がなければ(適当にメッセージいれたら)
+                    $user = LineUser::where('userid','=',$$user->userid)->first();
+                    $user->status="init";
+                    $user->step=0;
+                    $user->update();
+                    $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
                 }
+
+            }else{
+                //status step keywordより reReplyにはいっていなければ
+                //特定なしキーワード
+                //メッセージ内容について
+                switch($message){
+                    case "ポートフォリオ":
+                        $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
+                        break;
+                    case "- STAMP_RALLY -":
+                        $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べる\n初自作ＷＥＢアプリ"));
+                        $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
+                        break;
+                    case "- 地図茶 -":
+                        $sendMessage->add(new TextMessageBuilder("地図共有\nリアルタイムチャット\npusherを使ってみたかった"));
+                        $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
+                        break;
+                    default:
+                        //キーワードがなければオウム返しのフラグ
+                        $keyflg=false;
+                        //テーブル：オウム返しのキーワード等を取得
+                        $keywords = DB::table('re_comments')->get();
+                        //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
+                        foreach($keywords as $keyword){
+                            //あればコメントを返す準備をする
+                            if(strpos($message,$keyword->keyword)!==false){
+                                $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
+                                $keyflg=true;
+                                break;
+                            }
+                        }
+
+                        //該当キーワードがなければオウム返し
+                        if($keyflg==false){
+                            $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
+                        }
+
+                        //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
+                        if($lineUser->status != 'init'){
+                            $user = LineUser::where('userid','=',$$user->userid)->first();
+                            $user->status="init";
+                            $user->step=0;
+                            $user->update();
+                            $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
+                        }
+                        break;
+                    }
+            }
         }
+
+
 
 
 
