@@ -144,8 +144,8 @@ class talkRepeat
         $lineUser = DB::table('line_users')->where('userid','=',$user['userid'])->first();
         //userのstatusとstepとメッセージから返答を引っ張り出す（必ず１件）
         $reReply = DB::table('re_replies')
-                            ->where('status','=',$user->status)
-                            ->where('step','=',$user->step)
+                            ->where('status','=',$user['status'])
+                            ->where('step','=',$user['step'])
                             ->where('keyword','=',$message)
                             ->first();
 
