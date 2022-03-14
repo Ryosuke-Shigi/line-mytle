@@ -166,19 +166,24 @@ class talkRepeat
                     $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
                     break;
                 default:
-                    //オウム返し
+                    //キーワードがなければオウム返しのフラグ
+                    $keyflg=false;
                     //テーブル：オウム返しのキーワード等を取得
                     $keywords = DB::table('re_comments')->get();
-                    //一旦、そのままのコメントを保持する
-                    $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
                     //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
                     foreach($keywords as $keyword){
                         //あればコメントを返す準備をする
                         if(strpos($message,$keyword->keyword)!==false){
                             $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
+                            $keyflg=true;
                             break;
                         }
                     }
+                    //該当キーワードがなければオウム返し
+                    if($keyflg==false){
+                        $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
+                    }
+
                     //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
                     if($lineUser->status != 'init'){
                         $user = LineUser::where('userid','=',$$user->userid)->first();
