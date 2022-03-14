@@ -79,27 +79,31 @@ class talkRepeat
                         //スタンプ
                         case 'sticker':
                             $sendMessage=$this->reSticker();
+                            $this->initStatus($event['source']['userId']);
                             break;
                         //画像
                         case 'image':
                             $sendMessage=$this->reImage();
+                            $this->initStatus($event['source']['userId']);
                             break;
                         //映像
                         case 'video':
                             $sendMessage=$this->reVideo();
+                            $this->initStatus($event['source']['userId']);
                             break;
                         //音声
                         case 'audio':
                             $sendMessage=$this->reAudio();
+                            $this->initStatus($event['source']['userId']);
                             break;
                         //その他（locationなど）
                         default:
                             $sendMessage->add(new TextMessageBuilder("メタメタに…メタメタにやられたんだなっ…！"));
                             $sendMessage->add(new TextMessageBuilder("泣いても…許してくれなかったんだなっ…！"));
+                            $this->initStatus($event['source']['userId']);
                             break;
                     }
                     break;
-
                 case 'follow':
                     $sendMessage->add(new TextMessageBuilder("よろしくお願いするんだなっ！"));
                     break;
@@ -108,8 +112,6 @@ class talkRepeat
 
             }
         }
-
-
 
         //返答送信
         $values->bot->replyMessage($reply_token,$sendMessage);
@@ -192,97 +194,38 @@ class talkRepeat
                 //status step keywordより reReplyにはいっていなければ
                 //特定なしキーワード
                 //メッセージ内容について
-                switch($message){
-                    case "ポートフォリオ":
-                        $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
-                        break;
-                    case "- STAMP_RALLY -":
-                        $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べる\n初自作ＷＥＢアプリ"));
-                        $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
-                        break;
-                    case "- 地図茶 -":
-                        $sendMessage->add(new TextMessageBuilder("地図共有\nリアルタイムチャット\npusherを使ってみたかった"));
-                        $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
-                        break;
-                    default:
-                        //キーワードがなければオウム返しのフラグ
-                        $keyflg=false;
-                        //テーブル：オウム返しのキーワード等を取得
-                        $keywords = DB::table('re_comments')->get();
-                        //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
-                        foreach($keywords as $keyword){
-                            //あればコメントを返す準備をする
-                            if(strpos($message,$keyword->keyword)!==false){
-                                $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
-                                $keyflg=true;
-                                break;
-                            }
-                        }
+                //変数初期化
+                $keyflg=false;  //オウム返ししたかどうかのフラグ
 
-                        //該当キーワードがなければオウム返し
-                        if($user['status'] == 'init' && $keyflg==false){
-                            $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
-                        }
+                //ステータス・ステップ初期化
+                $this->initStatus($user['userid']);
 
-                        //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
-                        if($user['status'] != 'init'){
-                            $this->initStatus($user['userid']);
-                            $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
-                        }
+                //テーブル：オウム返しのキーワード等を取得
+                $keywords = DB::table('re_comments')->get();
+                //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
+                foreach($keywords as $keyword){
+                    //あればコメントを返す準備をする
+                    if(strpos($message,$keyword->keyword)!==false){
+                        $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
+                        $keyflg=true;
                         break;
                     }
+                }
+
+                //該当キーワードがなければオウム返し
+                if($user['status'] == 'init' && $keyflg==false){
+                    $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
+                }
+
+                //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
+                if($user['status'] != 'init'){
+                    $this->initStatus($user['userid']);
+                    $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
+                }
+
             }
 
         }
-
-
-
-
-
-
-
-/*         if($lineUser->status == 'init'){
-            //メッセージ内容について
-            switch($message){
-                case "ポートフォリオ":
-                    $sendMessage->add($this->quickReply('選んでほしいんだなっ！',array('- STAMP_RALLY -','- 地図茶 -')));
-                    break;
-                case "- STAMP_RALLY -":
-                    $sendMessage->add(new TextMessageBuilder("スタンプラリーを作成・遊べる\n初自作ＷＥＢアプリ"));
-                    $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
-                    break;
-                case "- 地図茶 -":
-                    $sendMessage->add(new TextMessageBuilder("地図共有できる\nリアルタイムチャット\npusherを使ってみたかった"));
-                    $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
-                    break;
-                default:
-                    //オウム返し
-                    //テーブル：オウム返しのキーワード等を取得
-                    $keywords = DB::table('re_comments')->get();
-                    //一旦、そのままのコメントを保持する
-                    $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
-                    //メッセージの中に、キーワード（猫とか犬とか）が含まれているか確認
-                    foreach($keywords as $keyword){
-                        //あればコメントを返す準備をする
-                        if(strpos($message,$keyword->keyword)!==false){
-                            $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
-                            break;
-                        }
-                    }
-                    //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
-                    if($lineUser->status != 'init'){
-                        $user = LineUser::where('userid','=',$$user->userid)->first();
-                        $user->status="init";
-                        $user->step=0;
-                        $user->update();
-                    }
-                    break;
-            }
-        }else{
-
-
-
-        } */
 
         return $sendMessage;
     }
@@ -297,7 +240,6 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-        $this->initStatus($user['userid']);
         return $sendMessage;
     }
     //画像返答
@@ -306,7 +248,6 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これは写真なんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を６度、氷の世界に変えたこわいやつなんだなっ！！"));
-        $this->initStatus($user['userid']);
         return $sendMessage;
     }
     //映像返答
@@ -315,7 +256,6 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはむーびーなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！"));
-        $this->initStatus($user['userid']);
         return $sendMessage;
     }
     //音声返答
@@ -324,7 +264,6 @@ class talkRepeat
         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはおんがくなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を３度、海の底に沈めたすごいやつなんだなっ！！"));
-        $this->initStatus($user['userid']);
         return $sendMessage;
     }
 
