@@ -42,7 +42,7 @@ class portfolio extends Seeder
             [
                 'status'=>'ポートフォリオ',
                 'step'=>0,
-                'text'=>'STRAMP-RALLY',
+                'text'=>'STAMP-RALLY',
             ],
             [
                 'status'=>'ポートフォリオ',
@@ -64,7 +64,7 @@ class portfolio extends Seeder
                 'keyword'=>'STAMP-RALLY',
                 'status'=>'ポートフォリオ',
                 'step'=>0,
-                'text'=>'スタンプラリーを作成＆遊ぶ\nＷＥＢアプリ',
+                'text'=>'スタンプラリーを作成＆遊ぶＷＥＢアプリ',
             ],
             [
                 'keyword'=>'STAMP-RALLY',
@@ -77,7 +77,7 @@ class portfolio extends Seeder
                 'keyword'=>'地図チャット',
                 'status'=>'ポートフォリオ',
                 'step'=>0,
-                'text'=>'地図共有\nリアルタイムチャット',
+                'text'=>'地図共有リアルタイムチャット',
             ],
             [
                 'keyword'=>'地図チャット',

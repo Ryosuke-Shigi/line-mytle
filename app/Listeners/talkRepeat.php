@@ -220,9 +220,10 @@ class talkRepeat
                         }
 
                         //該当キーワードがなければオウム返し
-                        if($keyflg==false){
+                        if($user['status'] == 'init' && $keyflg==false){
                             $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
                         }
+
                         //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
                         if($user['status'] != 'init'){
                             $this->initStatus($user['userid']);
