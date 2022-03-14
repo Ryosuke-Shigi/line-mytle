@@ -140,24 +140,24 @@ class talkRepeat
         //最終的にこれを返します
         $sendMessage = new MultiMessageBuilder();
 
-        //状態を取得
-        $lineUser = DB::table('line_users')->where('userid','=',$user['userid'])->first();
-
+        //replyReactionはクイックリプライなしのメッセージ対応
+        //出すだけでよい
         //クイックリプライでの対応かを判断する
         //ステータスがinitの完結リアクションは存在しない
         $replyReaction = DB::table('reply_reactions')
-                            ->where('status','=',$user['status'])
-                            ->where('step','=',$user['step'])
-                            ->where('keyword','=',$message)
-                            ->get();
-
-        //replyReactionはクイックリプライなしのメッセージ対応
-        //出すだけでよい
-        if($replyReaction!=false){
+            ->where('status','=',$user['status'])
+            ->where('step','=',$user['step'])
+            ->get();
+        //はいってきたキーワードが
+        //ユーザのstatus と stepで絞り込んだデータに含まれていれば
+        //リプライなしメッセージのみ
+        if($replyReaction->isnotEmpty()){
             foreach($replyReaction as $reaction){
                 $sendMessage->add(new TextMessageBuilder($reaction->text));
             }
+            $this->initStatus($user['userid']);
         }else{
+            dump("test");
             //送られてきたメッセージを元に判断（クイックリプライもキーワードできます）
             //userのstatusとstepとメッセージから返答を引っ張り出す（必ず１件）
             $reReply = DB::table('re_replies')
@@ -165,7 +165,6 @@ class talkRepeat
                                 ->where('step','=',$user['step'])
                                 ->where('keyword','=',$message)
                                 ->first();
-
             //もしreReplyに該当するものがなければ、特定アクションはなくオウム返しか
             //特定キーワードが入っていればそれで返す（猫ならにゃーんとか）
             if($reReply != null){
@@ -185,11 +184,7 @@ class talkRepeat
                     //ここでstatusとstepをユーザへ
                     $this->changeStatus($user['userid'],$reReply->nextStatus);
                 }else{
-                    //解答がなければ(適当にメッセージいれたら)
-                    $user = LineUser::where('userid','=',$$user->userid)->first();
-                    $user->status="init";
-                    $user->step=0;
-                    $user->update();
+                    $this->initStatus($user['userid']);
                     $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
                 }
 
@@ -228,19 +223,17 @@ class talkRepeat
                         if($keyflg==false){
                             $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
                         }
-
                         //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
-                        if($lineUser->status != 'init'){
-                            $user = LineUser::where('userid','=',$$user->userid)->first();
-                            $user->status="init";
-                            $user->step=0;
-                            $user->update();
+                        if($user['status'] != 'init'){
+                            $this->initStatus($user['userid']);
                             $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
                         }
                         break;
                     }
             }
+
         }
+
 
 
 
