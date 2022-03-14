@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\DB;
 
-
+//簡単特定キーワード対応
 
 class reComment extends Seeder
 {

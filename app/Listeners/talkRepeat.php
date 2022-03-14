@@ -142,6 +142,8 @@ class talkRepeat
 
         //状態を取得
         $lineUser = DB::table('line_users')->where('userid','=',$user['userid'])->first();
+
+        //送られてきたメッセージを元に判断（クイックリプライもキーワードできます）
         //userのstatusとstepとメッセージから返答を引っ張り出す（必ず１件）
         $reReply = DB::table('re_replies')
                             ->where('status','=',$user['status'])
@@ -151,7 +153,32 @@ class talkRepeat
 
         //もしreReplyに該当するものがなければ、特定アクションはなくオウム返しか
         //特定キーワードが入っていればそれで返す（猫ならにゃーんとか）
-        if($reReply == null){
+        if($reReply != null){
+            //status step keywordより 特定キーワード
+            $reAnswer = DB::table('reply_answers')
+                            ->where('status','=',$message)
+                            ->where('step','=',$user['step'])
+                            ->get();
+            //解答あればクイックリプライメッセージ
+            if($reAnswer != null){
+                $arrayAnswer = array();
+                foreach($reAnswer as $answer){
+                    array_push($arrayAnswer,$answer->text);
+                }
+                $sendMessage->add($this->quickReply($reReply->text,$arrayAnswer));
+                dump($sendMessage);
+            }else{
+                //解答がなければ(適当にメッセージいれたら)
+                $user = LineUser::where('userid','=',$$user->userid)->first();
+                $user->status="init";
+                $user->step=0;
+                $user->update();
+                $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
+            }
+
+        }else{
+            //status step keywordより reReplyにはいっていなければ
+            //特定なしキーワード
             //メッセージ内容について
             switch($message){
                 case "ポートフォリオ":
@@ -162,7 +189,7 @@ class talkRepeat
                     $sendMessage->add(new TextMessageBuilder("https://stamprally-laravel.herokuapp.com/LP"));
                     break;
                 case "- 地図茶 -":
-                    $sendMessage->add(new TextMessageBuilder("地図共有できる\nリアルタイムチャット\npusherを使ってみたかった"));
+                    $sendMessage->add(new TextMessageBuilder("地図共有\nリアルタイムチャット\npusherを使ってみたかった"));
                     $sendMessage->add(new TextMessageBuilder("https://map-talk.herokuapp.com/"));
                     break;
                 default:
@@ -179,6 +206,7 @@ class talkRepeat
                             break;
                         }
                     }
+
                     //該当キーワードがなければオウム返し
                     if($keyflg==false){
                         $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
@@ -190,14 +218,13 @@ class talkRepeat
                         $user->status="init";
                         $user->step=0;
                         $user->update();
+                        $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
                     }
                     break;
-            }
-        }else{
-            //テーブル上での特定リアクションが存在していれば　それで対応する
-
-
+                }
         }
+
+
 
 
 /*         if($lineUser->status == 'init'){
