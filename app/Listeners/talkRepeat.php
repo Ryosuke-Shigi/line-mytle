@@ -145,6 +145,7 @@ class talkRepeat
         //クイックリプライでの対応かを判断する
         //ステータスがinitの完結リアクションは存在しない
         $replyReaction = DB::table('reply_reactions')
+            ->where('keyword','=',$message)
             ->where('status','=',$user['status'])
             ->where('step','=',$user['step'])
             ->get();
@@ -157,7 +158,6 @@ class talkRepeat
             }
             $this->initStatus($user['userid']);
         }else{
-            dump("test");
             //送られてきたメッセージを元に判断（クイックリプライもキーワードできます）
             //userのstatusとstepとメッセージから返答を引っ張り出す（必ず１件）
             $reReply = DB::table('re_replies')
