@@ -16,6 +16,14 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "docker" # See documentation for possible values
-    directory: "./line-mytle" # Location of package manifests
+    directory: "./line-mytle/mysql" # Location of package manifests
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker" # See documentation for possible values
+    directory: "./line-mytle/nginx" # Location of package manifests
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker" # See documentation for possible values
+    directory: "./line-mytle/php" # Location of package manifests
     schedule:
       interval: "daily"
