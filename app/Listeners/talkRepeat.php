@@ -175,6 +175,12 @@ class talkRepeat
                                 ->where('status','=',$message)
                                 ->where('step','=',$user['step'])
                                 ->get();
+
+
+                //ここでテーブル構造をもう一つ作成して
+                //対応方法かんがえれば場所を使った検索機能追加とかも可能かも
+
+
                 //解答あればクイックリプライメッセージ
                 if($reAnswer != null){
                     $arrayAnswer = array();
@@ -185,18 +191,26 @@ class talkRepeat
                     $sendMessage->add($this->quickReply($reReply->text,$arrayAnswer));
                     //ここでstatusとstepをユーザへ
                     $this->changeStatus($user['userid'],$reReply->nextStatus);
-                }else{
+                }else{  //解答がなければここで終了
                     $this->initStatus($user['userid']);
                     $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
                 }
 
             }else{
                 //status step keywordより reReplyにはいっていなければ
-                //特定なしキーワード
+                //reReplyにはいっているキーワード以外
+
+
+
+                //他の機能をつける場合（会話でなく機能をつける）ここから追加していくか
+                //根本的に構造を変える必要があります
+                //今回のLINEBOTは会話特化？
+
+
+
                 //メッセージ内容について
                 //変数初期化
                 $keyflg=false;  //オウム返ししたかどうかのフラグ
-
                 //ステータス・ステップ初期化
                 $this->initStatus($user['userid']);
 
