@@ -5,15 +5,19 @@
 
 version: 2
 updates:
-  - package-ecosystem: "docker" # See documentation for possible values
-    directory: "./line-mytle/mysql" # Location of package manifests
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "docker" # See documentation for possible values
-    directory: "./line-mytle/nginx" # Location of package manifests
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "docker" # See documentation for possible values
-    directory: "./line-mytle/php" # Location of package manifests
-    schedule:
-      interval: "daily"
+  - package-ecosystem: "github-actions" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule: "daily"
+
+#  - package-ecosystem: "docker" # See documentation for possible values
+#    directory: "./line-mytle/mysql" # Location of package manifests
+#    schedule:
+#      interval: "daily"
+#  - package-ecosystem: "docker" # See documentation for possible values
+#    directory: "./line-mytle/nginx" # Location of package manifests
+#    schedule:
+#      interval: "daily"
+#  - package-ecosystem: "docker" # See documentation for possible values
+#    directory: "./line-mytle/php" # Location of package manifests
+#    schedule:
+#      interval: "daily"
