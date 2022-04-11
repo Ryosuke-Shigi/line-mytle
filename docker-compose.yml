@@ -4,25 +4,21 @@ volumes:
   php-fpm-socket:
 services:
   app:
-    build: ./php
+    build: ./line-mytle/php
     volumes:
       - php-fpm-socket:/var/run/php-fpm
       - ../:/work/laravel
 
   web:
-    build: ./nginx
-    ports:
-      - 8073:80
+    build: ./line-mytle/nginx
     volumes:
       - php-fpm-socket:/var/run/php-fpm
       - ../:/work/laravel
 
   db:
-    build: ./mysql
+    build: ./line-mytle/mysql
     volumes:
       - db-store:/var/lib/mysql
-    ports:
-      - 3371:3306
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -33,7 +29,5 @@ services:
       - PMA_HOSTS=db
       - PMA_USER=admin
       - PMA_PASSWORD=pass
-    ports:
-      - "8074:80"
     volumes:
-      - ./phpmyadmin/sessions:/sessions
+      - ./line-mytle/phpmyadmin/sessions:/sessions
