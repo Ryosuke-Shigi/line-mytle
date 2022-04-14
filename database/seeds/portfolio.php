@@ -20,7 +20,7 @@ class portfolio extends Seeder
                 'keyword'=>'ポートフォリオ',
                 'status'=>'init',
                 'step'=>0,
-                'text'=>'ポートフォリオを選んで欲しいんだなっ！',
+                'text'=>'ポートフォリオを選択してください！',
                 'nextStatus'=>'ポートフォリオ',
                 'nextStep'=>0,
             ],
@@ -28,7 +28,7 @@ class portfolio extends Seeder
                 'keyword'=>'他にない？',
                 'status'=>'ポートフォリオ',
                 'step'=>0,
-                'text'=>'ないんだなっ！',
+                'text'=>'ありません',
                 'nextStatus'=>'init',
                 'nextStep'=>0,
             ],
@@ -52,7 +52,7 @@ class portfolio extends Seeder
             [
                 'status'=>'ポートフォリオ',
                 'step'=>0,
-                'text'=>'やめる！',
+                'text'=>'終了',
             ],
         ];
         foreach($replyAnswerParams as $param){
