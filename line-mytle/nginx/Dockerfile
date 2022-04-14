@@ -1,5 +1,5 @@
 FROM node:14.2-alpine as node
-FROM nginx:1.18-alpine
+FROM nginx:1.21.6-alpine
 SHELL ["/bin/ash", "-oeux", "pipefail", "-c"]
 
 ENV TZ=Asia/Tokyo
