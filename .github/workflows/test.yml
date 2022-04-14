@@ -30,7 +30,7 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: docker-compose up
-      run: docker-compose up -d
+      run: docker-compose up -d --build
     - name: compose install
       run: docker-compose exec app composer install
 #    - name: Install Dependencies
