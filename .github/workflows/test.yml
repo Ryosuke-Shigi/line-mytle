@@ -19,7 +19,7 @@ jobs:
           MYSQL_USER: admin
           MYSQL_PASSWORD: pass
         ports:
-          - 3306:3306
+          - 3371:3306
 
     steps:
     - uses: shivammathur/setup-php@v2
