@@ -34,7 +34,7 @@ jobs:
     - name: docker-compose up -d
       run: docker-compose up -d
     - name: compose install
-      run: composer install -q --no-ansi --prefer-dist --no-scripts --no-progress --no-interaction
+      run: docker-compose run app composer install
 #    - name: Install Dependencies
 #      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Generate key
