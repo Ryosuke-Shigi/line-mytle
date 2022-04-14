@@ -193,7 +193,7 @@ class talkRepeat
                     $this->changeStatus($user['userid'],$reReply->nextStatus);
                 }else{  //解答がなければここで終了
                     $this->initStatus($user['userid']);
-                    $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
+                    $sendMessage->add(new TextMessageBuilder("終了"));
                 }
 
             }else{
@@ -220,7 +220,7 @@ class talkRepeat
                 foreach($keywords as $keyword){
                     //あればコメントを返す準備をする
                     if(strpos($message,$keyword->keyword)!==false){
-                        $sendMessage->add(new TextMessageBuilder($keyword->comment."\nなんだなっ！"));
+                        $sendMessage->add(new TextMessageBuilder($keyword->comment));
                         $keyflg=true;
                         break;
                     }
@@ -228,13 +228,13 @@ class talkRepeat
 
                 //該当キーワードがなければオウム返し
                 if($user['status'] == 'init' && $keyflg==false){
-                    $sendMessage->add(new TextMessageBuilder($message."\nなんだなっ！"));
+                    $sendMessage->add(new TextMessageBuilder($message));
                 }
 
                 //なんらかのアクションにはいっているさなか、適当メッセージを送っていたら
                 if($user['status'] != 'init'){
                     $this->initStatus($user['userid']);
-                    $sendMessage->add(new TextMessageBuilder("茶番はここまでなんだなっ！"));
+                    $sendMessage->add(new TextMessageBuilder("終了"));
                 }
 
             }
@@ -251,34 +251,38 @@ class talkRepeat
     //スタンプ返答
     private function reSticker(){
         $sendMessage = new MultiMessageBuilder();
-        $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("スタンプ"));
+/*         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはスタンプなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を７度、なにもない焦土にかえたこわいやつなんだなっ！！"));
-        return $sendMessage;
+ */        return $sendMessage;
     }
     //画像返答
     private function reImage(){
         $sendMessage = new MultiMessageBuilder();
-        $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("画像"));
+/*         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これは写真なんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を６度、氷の世界に変えたこわいやつなんだなっ！！"));
-        return $sendMessage;
+ */        return $sendMessage;
     }
     //映像返答
     private function reVideo(){
         $sendMessage = new MultiMessageBuilder();
-        $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("動画！"));
+/*         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはむーびーなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を５度、誰も住めない毒でいっぱいにしたこわいやつなんだなっ！！"));
-        return $sendMessage;
+ */        return $sendMessage;
     }
     //音声返答
     private function reAudio(){
         $sendMessage = new MultiMessageBuilder();
-        $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
+        $sendMessage->add(new TextMessageBuilder("音声"));
+/*         $sendMessage->add(new TextMessageBuilder("知ってるんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("これはおんがくなんだなっ！"));
         $sendMessage->add(new TextMessageBuilder("かつて和歌山を３度、海の底に沈めたすごいやつなんだなっ！！"));
-        return $sendMessage;
+ */        return $sendMessage;
     }
 
 

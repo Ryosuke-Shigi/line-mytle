@@ -52,7 +52,7 @@ class portfolio extends Seeder
             [
                 'status'=>'ポートフォリオ',
                 'step'=>0,
-                'text'=>'ないんだなっ！',
+                'text'=>'やめる！',
             ],
         ];
         foreach($replyAnswerParams as $param){
