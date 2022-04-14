@@ -9,6 +9,17 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+  - package-ecosystem: "composer" # See documentation for possible values
+    directory: "./line-mytle/php" # Location of package manifests
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+  - package-ecosystem: "docker" # See documentation for possible values
+    directory: ".npm" # Location of package manifests
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+
 
 #  - package-ecosystem: "docker" # See documentation for possible values
 #    directory: "./line-mytle/mysql" # Location of package manifests
