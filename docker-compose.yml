@@ -7,13 +7,13 @@ services:
     build: ./line-mytle/php
     volumes:
       - php-fpm-socket:/var/run/php-fpm
-      - ../:/work/laravel
+      - ./:/work/laravel
 
   web:
     build: ./line-mytle/nginx
     volumes:
       - php-fpm-socket:/var/run/php-fpm
-      - ../:/work/laravel
+      - ./:/work/laravel
 
   db:
     build: ./line-mytle/mysql
